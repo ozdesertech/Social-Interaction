@@ -1,0 +1,64 @@
+﻿@model sozluk123.Models.entry
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>entry</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.entry_ismi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.entry_ismi)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.entry_icerik)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.entry_icerik)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.kayit_tarih)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.kayit_tarih)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.active)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.active)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.yazar.yazar_ismi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.yazar.yazar_ismi)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

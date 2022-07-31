@@ -1,0 +1,130 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<style>
+    .center {
+        margin: auto;
+        align-items: center;
+        width: 50%;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 10px;
+    }
+
+
+    .validation-summary-errors ul {
+        list-style: none;
+        text-align: center;
+    }
+
+    .btn {
+        background-color: #008cba; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+    }
+
+        .button:disabled {
+            opacity: 0.5;
+        }
+
+    .hide {
+        display: none;
+    }
+</style>
+
+
+
+@model sozluk123.Models.LoginViewModel
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="center">
+        <h2>Login</h2>
+        <div class="form-horizontal">
+
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger col-md-11" })
+            <br>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Username, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-6" style="float:none;margin:auto;">
+                    @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-6" style="float:none;margin:auto;">
+                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10" style="float:none;margin:auto;">
+                    <button class="btn btn-primary" type="submit" value="Login">
+                        <i class="loading-icon fa fa-spinner fa-spin hide"></i>
+                        <span class="btn-txt">Login</span>
+                    </button>
+                    @*<input type="submit" value="Login" class="btn btn-primary" />*@
+                </div>
+            </div>
+            
+        </div>
+    </div>
+}
+
+<div class="center">
+
+    @Html.ActionLink("Sign Up", "Signup", "Accounts")
+
+</div>
+<div class="center">
+    @Html.ActionLink("Forgot Password?", "ForgotPassword", "Accounts")
+</div>
+
+<div class="center">
+    @Html.ActionLink("Main Page", "Index123", "entries")
+</div>
+
+
+
+
+
+
+
+<div class="result"></div>
+
+<script>
+    $(document).ready(function () {
+        $(".btn").on("click", function () {
+            $(".result").text("");
+            $(".loading-icon").removeClass("hide");
+            $(".button").attr("disabled", true);
+            $(".btn-txt").text("Logging in...");
+            
+                setTimeout(function () {
+                
+                $(".loading-icon").addClass("hide");
+                $(".button").attr("disabled", false);
+                $(".btn-txt").text("Login");
+                    $this.button('reset');
+                }, 8000);
+            });
+        });
+    
+</script>

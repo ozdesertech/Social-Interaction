@@ -1,0 +1,308 @@
+﻿@model IEnumerable<sozluk123.Models.entry>
+
+@*@model Tuple<sozluk123.Models.entry, sozluk123.Models.yazar>*@
+
+@{
+    ViewBag.Title = "Index1";
+}
+
+<br />
+<br />
+@* Table for showing the list of teachers from the database *@
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="OpenAddPopup();">Add New Teacher</button>
+<br />
+<br />
+<input type="text" id="txtsearch" class="form-control" />
+<br />
+<br />
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            @*<th>
+                    ID
+                </th>*@
+
+            <th>
+                Entry
+            </th>
+            <th>
+                İcerik
+            </th>
+            <th>
+                Yazar
+            </th>
+
+            <th>
+                İşlem Tarih
+            </th>
+            <th>
+                Active
+            </th>
+        </tr>
+    </thead>
+    <tbody class="tbody"></tbody>
+</table>
+<div id="divcontent">
+</div>
+
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<script type="text/javascript">
+    $("#txtsearch").on("keyup", function () {
+        var txtenter = $(this).val();
+        $("table tr").each(function (results) {
+            if (results !== 0) {
+                var id = $(this).find("td").text();
+
+                if (id.indexOf(txtenter) !== 0 && id.toLowerCase().indexOf(txtenter.toLowerCase()) < 0) {
+                    $(this).hide();
+                }
+
+
+                else {
+                    $(this).show();
+                }
+            }
+        })
+    })
+
+
+    $(document).ready(function () {
+        BindteacherData();
+
+    });
+
+
+
+    function BindteacherData() {
+
+        $.ajax({
+            url: "/entries/GetAllTeachers",
+
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+
+
+            success: function (result) {
+
+                if (result) {
+                    //itetrate thorugh each record and bind it to td
+                    var html = '';
+
+                    $.each(result, function (key, item) {
+                        //var searchEvent = item.yazar_ismi;
+                        //var totalCount = data.totalCount
+
+                        value = new Date(parseInt(item.kayit_tarih.substr(6)));
+
+
+                        html += '<tr>';
+                        /*html += '<td>' + item.ID + '</td>';*/
+                        html += '<td>' + item.entry_ismi + '</td>';
+                        html += '<td>' + item.entry_icerik + '</td>';
+                        html += '<td>' + item.yazar_ismi + '</td>';
+                        html += '<td><label>Updated date:</label>' + value + '</td>';
+                        html += '<td>' + item.active + '</td>';
+                        html += '<td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="OpenUpdatePopup1(\'' + item.ID + '\');">EDIT New Teacher</button></td>';
+                        html += '<td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="DeleteTeacher(\'' + item.ID + '\');">Delete New Teacher</button></td>';
+                        html += '</tr>';
+                    });
+                    $('.tbody').html(html);
+                }
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+
+
+    function OpenAddPopup() {
+
+        $.ajax({
+            url: '/entries/LoadaddTeacherPopup',
+            contentType: 'application/html; charset=utf-8',
+            type: 'GET',
+            dataType: 'html',
+            success: function (result) {
+                $('#divcontent').empty();
+                $('#divcontent').html(result);
+                $('#AddUpdateModelPopup').modal('show');
+            },
+            error: function (xhr, status) {
+                alert(status);
+            }
+        })
+    }
+
+    function OpenUpdatePopup1(Id123) {
+        $.ajax({
+            url: '/entries/LoadEditTeacherPopup?TeacherId=' + Id123,
+            contentType: 'application/html; charset=utf-8',
+            type: 'GET',
+            dataType: 'html',
+            success: function (result) {
+                $('#divcontent').empty();
+                $('#divcontent').html(result);
+                $('#AddUpdateModelPopup').modal('show');
+                //$('#btndivuserguidemodel').trigger('click');
+            },
+            error: function (xhr, status) {
+                alert(status);
+            }
+        })
+    }
+
+
+
+    //Add Data Function
+    function AddTeacher() {
+        var res = ValidateForm();
+        if (res == false) {
+            return false;
+        }
+        var TeacherObj = {
+            ID: $('#ID').val(),
+            entry_ismi: $('#entry_ismi').val(),
+            entry_icerik: $('#entry_icerik').val(),
+            yazar_id: $('#yazar_id').val(),
+            kayit_tarih: $('#kayit_tarih').val(),
+            active: $('#active').val(),
+        };
+        $.ajax({
+            url: "/entries/AddTeacher",
+            data: JSON.stringify(TeacherObj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                //populate table with new record
+                swal("Successful!", "Your Data has been recorded", "success");
+                BindteacherData();
+                $('#AddUpdateModelPopup').modal('hide');
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+    //function for updating Patient record
+    function UpdateTeacher() {
+        var res = ValidateForm();
+        if (res == false) {
+            return false;
+        }
+        var TeacherObj = {
+            Id: $('#ID').val(),
+            entry_ismi: $('#entry_ismi').val(),
+            entry_icerik: $('#entry_icerik').val(),
+            yazar_id: $('#yazar_id').val(),
+            kayit_tarih: $('#kayit_tarih').val(),
+            active: $('#active').val(),
+        };
+        //if (!TeacherObj.Id || TeacherObj.Id <= 0) {
+        //    alert("Invalid Id!");
+        //    return false;
+        //}
+        $.ajax({
+            url: "/entries/UpdateTeacher",
+            data: JSON.stringify(TeacherObj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                BindteacherData();
+                swal("Successful!", "Your Data has been updated", "success");
+                $('#AddUpdateModelPopup').modal('hide');
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+
+    //function for deleting Teacher's record
+    function DeleteTeacher(ID) {
+        var ans = confirm("Are you sure you want to delete?");
+        if (ans) {
+            $.ajax({
+                url: "/entries/DeleteTeacher?TeacherId=" + ID,
+                type: "POST",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (result) {
+                    swal("Successful!", "Your Data has been deleted", "success");
+                    BindteacherData();
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+    }
+
+    function JSalert() {
+
+        swal("Congrats!", ", Your account is created!", "success");
+
+    }
+
+
+    function ValidateForm() {
+        var isValid = true;
+        if ($('#entry_ismi').val().trim() == "") {
+            $('#entry_ismi').css('border-color', 'Red');
+
+            isValid = false;
+        }
+        else if ($('#entry_ismi').val().startsWith("#")) {
+            $('#entry_ismi').css('border-color', 'lightgrey');
+        }
+
+
+        else {
+
+            $('#entry_ismi').css('border-color', 'red');
+
+
+        }
+        if ($('#entry_icerik').val().trim() == "") {
+            $('#entry_icerik').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#entry_icerik').css('border-color', 'lightgrey');
+        }
+        if ($('#yazar_id').val().trim() == "") {
+            $('#yazar_id').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#yazar_id').css('border-color', 'lightgrey');
+        }
+        //if ($('#kayit_tarih').val().trim() == "") {
+        //    $('#kayit_tarih').css('border-color', 'Red');
+        //    isValid = false;
+        //}
+        //else {
+        //    $('#kayit_tarih').css('border-color', 'lightgrey');
+        //}
+
+        //if ($('#active').val().trim() == "") {
+        //    $('#active').css('border-color', 'Red');
+        //    isValid = false;
+        //}
+        //else {
+        //    $('#active').css('border-color', 'lightgrey');
+        //}
+        return isValid;
+    }
+</script>

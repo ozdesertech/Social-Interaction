@@ -1,0 +1,92 @@
+﻿
+@using sozluk123.Models
+@*@model IEnumerable<sozluk123.Models.entry>*@
+@model lstentries1
+@{
+    bool isLoggedIn = true;
+    if (string.IsNullOrWhiteSpace(User.Identity.Name))
+    {
+        isLoggedIn = false;
+    }
+}
+
+
+
+
+<div class="modal fade" id="AddUpdateModelPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h4 class="modal-title" id="AddUpdateModelLabel">Add Records</h4>
+            </div>
+            <div style="padding:5px;">
+                
+                <br />
+                <div class="modal-body ">
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-horizontal">
+
+                            <div style="text-align:center">
+
+
+
+
+
+
+                                @foreach (var item123 in Model.entry1yazar1)
+                                {
+
+
+
+
+
+                                    <p><b>@item123.comment</b></p>
+                                    <p style="text-align:center">username: <i>@item123.yazar.yazar_ismi</i></p>
+                                    <p style="text-align:center"><i>@item123.kayit_tarih</i></p>
+
+
+                                    foreach (var item421 in Model.yazars1)
+                                    {
+                                        if (isLoggedIn)
+                                        {
+                                            if (item421.yazar_ismi.Contains(User.Identity.Name))
+                                            {
+                                                if (item421.ID == item123.yazar_ID)
+                                                {
+
+                                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="OpenUpdatePopup15('+ @item123.ID +')">Edit <i class="glyphicon glyphicon-pencil"></i></button>
+                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="DeleteTeacher15('+@item123.ID+')">Delete <i class="glyphicon glyphicon-trash"></i></button>
+                                                    </div>
+
+
+                                                }
+                                            }
+
+                                        }
+
+
+                                    }
+
+
+                                    <hr>
+
+
+                                }
+
+                                <hr>
+
+
+                            </div>
+                        </div>
+
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
