@@ -10,7 +10,7 @@
     }
 }
 
-
+<link href="~/Content/Modal.css" rel="stylesheet" />
 
 
 <div class="modal fade" id="AddUpdateModelPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -37,7 +37,7 @@
 
 
 
-                                @foreach (var item123 in Model.entry1yazar1)
+                                @foreach (var item123 in Model.entry1yazar1.Skip(1))
                                 {
 
 

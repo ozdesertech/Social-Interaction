@@ -16,7 +16,6 @@
 
 }
 
-
 <br />
 <div class="col-md-6" style="float:none;margin:auto;">
     <input type="text" id="txtsearch" placeholder="Search" class="form-control" style="max-width:100%" align="middle" />
@@ -139,7 +138,7 @@
                                                 }
 
 
-                                                @foreach (var item123 in Model.entry1yazar1)
+                                                @foreach (var item123 in Model.entry1yazar1.GroupBy(x => x.entry_ID).Select(x => x.FirstOrDefault()))
                                                 {
 
 
