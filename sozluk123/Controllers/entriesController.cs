@@ -392,6 +392,7 @@ namespace sozluk123.Controllers
             return PartialView(ViewBag.q);
         }
 
+       
         public ActionResult Like1(Guid? id )
         {
            
@@ -403,7 +404,7 @@ namespace sozluk123.Controllers
             return PartialView(ent) ;
         }
 
-
+        
 
         public JsonResult AddTeacher1234(entry teachers)
         {

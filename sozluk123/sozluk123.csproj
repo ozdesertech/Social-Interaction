@@ -214,6 +214,7 @@
     <Compile Include="Controllers\basliksController.cs" />
     <Compile Include="Controllers\entriesController.cs" />
     <Compile Include="Controllers\yazarsController.cs" />
+    <Compile Include="CustomHelper.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -3102,6 +3103,7 @@
     <Content Include="SweetAlert2\staticMethods.js" />
     <Content Include="SweetAlert2\SweetAlert.js" />
     <Content Include="SweetAlert2\sweetalert2.js" />
+    <Content Include="tick1.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
