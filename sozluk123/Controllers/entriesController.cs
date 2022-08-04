@@ -399,7 +399,7 @@ namespace sozluk123.Controllers
 
           
             var ent = db.entry.Where(x => x.ID == id).ToList();
-            ent.FirstOrDefault().post_like += 1;           
+            ent.FirstOrDefault().post_like += 1;         
             db.SaveChanges();      
             return PartialView(ent) ;
         }

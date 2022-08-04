@@ -1,6 +1,12 @@
-﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
+
+
+
+
 <html>
+
+
+
 
 @{
     bool isLoggedIn = true;
@@ -9,6 +15,8 @@
         isLoggedIn = false;
     }
 }
+
+
 
 <head>
     <meta charset="utf-8" />
@@ -19,7 +27,51 @@
     @Scripts.Render("~/bundles/modernizr")
 
 </head>
+
+
+
 <body>
+    <style>
+        .navbar-inverse {
+            background-color: white;
+            border-color: #000000;
+        }
+
+            .navbar-inverse .navbar-brand {
+                color: #000000;
+            }
+
+            .navbar-inverse .navbar-toggle .icon-bar {
+                background-color: #000000;
+                border-color: black;
+            }
+         
+       
+   
+
+                .navbar-inverse .navbar-brand:hover, .navbar-inverse .navbar-brand:focus {
+                    background-color: ghostwhite;
+                    color: #000000;
+                }
+
+            .navbar-inverse .navbar-nav > li > a {
+                color: #000000;
+            }
+
+                .navbar-inverse .navbar-nav > li > a:hover, .navbar-inverse .navbar-brand:focus {
+                    background-color: ghostwhite;
+                    color: #000000;
+                }
+
+                .navbar-inverse .navbar-nav > li > a:hover, .navbar-inverse .navbar-nav > li > a:focus {
+                    color: black;
+                }
+
+        .navbar-inverse .navbar-toggle:hover,
+        .navbar-inverse .navbar-toggle:focus {
+            background-color: ghostwhite;
+        }
+    </style>
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -36,33 +88,26 @@
             <div class="navbar-collapse collapse navbar-right">
 
                 <ul class="nav navbar-nav">
-                    @{
-                        if (isLoggedIn)
-                        {
-                            <li>@Html.ActionLink("Welcome " + @User.Identity.Name, "Index123", "entries")</li>
-                                
+                    @{ if (isLoggedIn)
+                                    {
+                        <li>@Html.ActionLink("Welcome " + @User.Identity.Name, "Index123", "entries")</li>
 
 
 
-                            <li><a href="javascript:void(0);" onclick="OpenAddPopup1234();">Add New Entry</a></li>
 
-                            <li>@Html.ActionLink("Signout", "Signout", "Accounts")</li>
+                                        <li><a href="javascript:void(0);" onclick="OpenAddPopup1234();">Add New Entry</a></li>
 
-                        }
-                        else
-                        {
-                            <li>@Html.ActionLink("Login", "Login", "Accounts")</li>
+                                                        <li>@Html.ActionLink("Signout", "Signout", "Accounts")</li> }
+                                                                    else
+                                                                    {
+                                                        <li>@Html.ActionLink("Login", "Login", "Accounts")</li>
 
-                            <li>@Html.ActionLink("Register", "Signup", "Accounts")</li>
-                        }
-
-
-                    }
+                                                                        <li>@Html.ActionLink("Register", "Signup", "Accounts")</li> } }
                 </ul>
 
             </div>
 
-                
+
 
 
 

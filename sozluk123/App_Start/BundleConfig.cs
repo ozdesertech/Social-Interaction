@@ -26,7 +26,8 @@ namespace sozluk123
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
 
-            
+            BundleTable.EnableOptimizations = false;
+
         }
     }
 }

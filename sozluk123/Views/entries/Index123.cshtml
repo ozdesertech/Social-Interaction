@@ -1,29 +1,26 @@
 ﻿@using sozluk123.Models
 @*@model IEnumerable<sozluk123.Models.entry>*@
 @model lstentries1
+
 @{ bool isLoggedIn = true;
     if (string.IsNullOrWhiteSpace(User.Identity.Name))
     {
         isLoggedIn = false;
-    } }
-
-
-
+    } 
+}
 
 <link href="~/Content/general.css" rel="stylesheet" />
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script src="~/Scripts/linq.min.js"></script>
 <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+
 <style>
     .btn-default {
         background-color: transparent;
-        
     }
 
    
 </style>
-
-
 
 @{ ViewBag.title = "HELLO INDEX"; }
 
@@ -33,171 +30,162 @@
 </div>
 <hr>
 
-
-
-
 <div class="body-content">
     <div class="row">
 
         <div id="col2" class="column" style="background-color: white;">
             <div style="text-align:center">
 
-
-
                 @foreach (var item in Model.entries1)
                 {
 
+    <table class="center">
+        <tr>
+            <td><p><b>@item.entry_ismi</b></p></td>
+        </tr>
+        <tr>
+            <td><p>@item.entry_icerik </p></td>
+        </tr>
+        <tr>
+            <td><p>username: <i>@item.yazar.yazar_ismi</i></p></td>
+        </tr>
+        <tr>
+            <td><p><i>@item.kayit_tarih</i></p></td>
+        </tr>
 
-                <table class="center">
-                    <tr>
-                        <td><p><b>@item.entry_ismi</b></p></td>
-                    </tr>
-                    <tr>
-                        <td><p>@item.entry_icerik </p></td>
-                    </tr>
-                    <tr>
-                        <td><p>username: <i>@item.yazar.yazar_ismi</i></p></td>
-                    </tr>
-                    <tr>
-                        <td><p><i>@item.kayit_tarih</i></p></td>
-                    </tr>
+
+        @if (User.Identity.IsAuthenticated)
+        {
+
+        <tr>
+            <td>
+
+                <p id="@item.ID.ToString()">
+
+                    @item.post_like Likes
+
+                </p>
+
+            </td>
+        </tr>
+                        }
 
 
-                    @if (User.Identity.IsAuthenticated)
+
+
+
+        <tr>
+
+            @if (isLoggedIn)
+            {
+<td>
+    <div class="btn-group" role="group" aria-label="Basic example">
+
+        @*@Html.ActionLink("+Add Comment", "setvalue", "entries", new { id = item.ID }, new { @class = "btn btn-primary ", onclick = "OpenAddPopup12345();", alt = "@item.ID" })*@
+        @Ajax.RawActionLink(string.Format("<i class='fa fa-thumbs-up'></i>"), "Like1", "entries", new { id = item.ID }, new AjaxOptions { HttpMethod = "GET", UpdateTargetId = @item.ID.ToString() }, new { @class = "btn btn-primary my-custom-class" })
+        @*@Ajax.ActionLink("Like", "Like1", "entries", new { id = item.ID }, new AjaxOptions { HttpMethod = "GET", UpdateTargetId = @item.ID.ToString() }, new { @class = "btn btn-primary  my-custom-class" })*@
+        <button id="btn1" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="return OpenAddPopupComment('+ @item.ID  +')"><i class="fa fa-comment"></i></button>
+
+
+        @foreach (var item4211 in Model.yazars1)
+        {
+            if (isLoggedIn)
+            {
+
+
+                if (item4211.yazar_ismi.Contains(User.Identity.Name))
+                {
+                    if (item4211.ID == item.yazar_id)
                     {
 
-                <tr>
-                    <td>
-                       
-                        <p  id="@item.ID.ToString()">
+<button id="btn3" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="OpenUpdatePopup1('+ @item.ID  +')"> <i class="fa fa-edit"></i> </button>
+                                    <button id="btn4" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="DeleteTeacher('+ @item.ID +')"><i class="fa fa-trash"></i></button>}
+                            }
 
-                            @item.post_like Likes
+                        }
 
-                        </p>
-                        
-                    </td>
-                </tr>
-                                   
-                                    
+
+                    }
+
+    </div>
+
+</td>                }
+
+        </tr>
+
+        <tr>
+            <td>
+                <br>
+                <div class="accordion" id="col2">
+                    <div>
+                        <input type="checkbox" id="@item.ID.GetHashCode()" class="accordion__input">
+                        <label for="@item.ID.GetHashCode()" class="accordion__label">@{Html.RenderAction("CountRecords", "entries", new { id1 = item.ID });} Comments </label>
+                        <div class="accordion__content">
+                            <div style="background-color:white;">
+                                <div style="text-align:center">
+                                    @if (item.is_comment == false)
+                                    {
+                    <i>No Comments</i>}
+
+
+                                    @foreach (var item123 in Model.entry1yazar1.GroupBy(x => x.entry_ID).Select(x => x.FirstOrDefault()))
+                                    {
+
+
+
+                                        if (item.ID == item123.entry_ID)
+                                        {
+
+
+                    <p><b>@item123.comment</b></p>
+                                            <p style="text-align:center">username: <i>@item123.yazar.yazar_ismi</i></p>
+                                                                    <p style="text-align:center"><i>@item123.kayit_tarih</i></p> foreach (var item421 in Model.yazars1)
+                                                                    {
+                                                                        if (isLoggedIn)
+                                                                        {
+                                                                            if (item421.yazar_ismi.Contains(User.Identity.Name))
+                                                                            {
+                                                                                if (item421.ID == item123.yazar_ID)
+                                                                                {
+
+                                            <div class="btn-group" role="group" aria-label="Basic example">
+                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="OpenUpdatePopup15('+ @item123.ID +')"> <i class="fa fa-edit"></i></button>
+                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="DeleteTeacher15('+@item123.ID+')"> <i class="fa fa-trash"></i></button>
+                                            </div> }
+                                                                            }
+
+                                                                        }
+
+
+                                                                    }
+
+
+                                            <hr>}
+
+
+
                                     }
 
 
-                   
-
-
-                    <tr>
-
-                        @if (isLoggedIn)
-                        {
-                <td>
-                    <div class="btn-group" role="group" aria-label="Basic example">
-
-                        @*@Html.ActionLink("+Add Comment", "setvalue", "entries", new { id = item.ID }, new { @class = "btn btn-primary ", onclick = "OpenAddPopup12345();", alt = "@item.ID" })*@
-                        @Ajax.RawActionLink(string.Format("<i class='fa fa-thumbs-up'></i> Like"), "Like1", "entries", new { id = item.ID }, new AjaxOptions { HttpMethod = "GET", UpdateTargetId = @item.ID.ToString() }, new { @class = "btn btn-primary my-custom-class" })
-                        @*@Ajax.ActionLink("Like", "Like1", "entries", new { id = item.ID }, new AjaxOptions { HttpMethod = "GET", UpdateTargetId = @item.ID.ToString() }, new { @class = "btn btn-primary  my-custom-class" })*@
-                        <button id="btn1" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="return OpenAddPopupComment('+ @item.ID  +')"><i class="glyphicon glyphicon-plus"></i>Add Comment</button>
-                       
-
-                        @foreach (var item4211 in Model.yazars1)
-                        {
-                            if (isLoggedIn)
-                            {
-
-
-                                if (item4211.yazar_ismi.Contains(User.Identity.Name))
-                                {
-                                    if (item4211.ID == item.yazar_id)
-                                    {
-
-                                                        <button id="btn3" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="OpenUpdatePopup1('+ @item.ID  +')">Edit <i class="glyphicon glyphicon-pencil"></i> </button>
-                                                        <button id="btn4" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="DeleteTeacher('+ @item.ID +')">Delete<i class="glyphicon glyphicon-trash"></i></button>}
-                                                }
-
-                                            }
-
-
-                                        }
-
-                    </div>
-
-                </td>
-                }
-
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <br>
-                            <div class="accordion" id="col2">
-                                <div>
-                                    <input type="checkbox" id="@item.ID.GetHashCode()" class="accordion__input">
-                                    <label for="@item.ID.GetHashCode()" class="accordion__label">@{Html.RenderAction("CountRecords", "entries", new { id1 = item.ID });} Comments </label>
-                                    <div class="accordion__content">
-                                        <div style="background-color:white;">
-                                            <div style="text-align:center">
-                                                @if (item.is_comment == false)
-                                                {
-                                <i>No Comments</i>}
-
-
-                                                @foreach (var item123 in Model.entry1yazar1.GroupBy(x => x.entry_ID).Select(x => x.FirstOrDefault()))
-                                                {
-
-
-
-                                                    if (item.ID == item123.entry_ID)
-                                                    {
-
-
-                                <p><b>@item123.comment</b></p>
-                                                        <p style="text-align:center">username: <i>@item123.yazar.yazar_ismi</i></p>
-                                                                                <p style="text-align:center"><i>@item123.kayit_tarih</i></p> foreach (var item421 in Model.yazars1)
-                                                                                {
-                                                                                    if (isLoggedIn)
-                                                                                    {
-                                                                                        if (item421.yazar_ismi.Contains(User.Identity.Name))
-                                                                                        {
-                                                                                            if (item421.ID == item123.yazar_ID)
-                                                                                            {
-
-                                                        <div class="btn-group" role="group" aria-label="Basic example">
-                                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="OpenUpdatePopup15('+ @item123.ID +')">Edit <i class="glyphicon glyphicon-pencil"></i></button>
-                                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="DeleteTeacher15('+@item123.ID+')">Delete <i class="glyphicon glyphicon-trash"></i></button>
-                                                        </div> }
-                                                }
-
-                                            }
-
-
-                                        }
-
-
-                <hr>}
-
-
-
-        }
-
-
-                                            </div>
-                                        </div>
-                                        @if (item.is_comment == true)
-                                        {
-                        <button id="btn3" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="return listloaddata('+ @item.ID  +')">Load More Comments  </button>}
-
-
-
-                                    </div>
-
                                 </div>
                             </div>
-                            <hr>
+                            @if (item.is_comment == true)
+                            {
+            <button id="btn3" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="return listloaddata('+ @item.ID  +')">Load More Comments  </button>}
 
 
-                        </td>
-                    </tr>
 
-                </table>}
+                        </div>
+
+                    </div>
+                </div>
+                <hr>
+
+
+            </td>
+        </tr>
+
+    </table>}
 
 
             </div>
@@ -240,24 +228,24 @@
 @*<script type="text/javascript">
 
 
-    $(function () {
-        var allchar = "0123456789ABCDEF";
-        $('.my-custom-class').each(function (i, obj) {
-            $('.my-custom-class').click(function (event) {
-                var randcol = "";
-                for (var i = 0; i < 6; i++) {
-                    randcol += allchar[Math.floor(Math.random() * 16)];
-                    event.target.style.backgroundColor = "#" + randcol;
-                    
-                }
+        $(function () {
+            var allchar = "0123456789ABCDEF";
+            $('.my-custom-class').each(function (i, obj) {
+                $('.my-custom-class').click(function (event) {
+                    var randcol = "";
+                    for (var i = 0; i < 6; i++) {
+                        randcol += allchar[Math.floor(Math.random() * 16)];
+                        event.target.style.backgroundColor = "#" + randcol;
+
+                    }
 
 
-            })
+                })
 
 
+            });
         });
-    });
-</script>*@
+    </script>*@
 
 
 @if (isLoggedIn)
@@ -286,13 +274,15 @@
 
 
         //localStorage.clear();
-</script> }
-            else if (isLoggedIn == false)
-            {
+</script>
+ }
+else if (isLoggedIn == false)
+{
 
 <script type="text/javascript">
     localStorage.removeItem('first_time2');
-</script>}
+</script>
+}
 
 
 <script type="text/javascript">
