@@ -285,14 +285,25 @@ else if (isLoggedIn == false)
 }
 
 
+
+
+
 <script type="text/javascript">
+   
+
+        $('.my-custom-class').on('click', function () {
+            icon = $(this).find("i");
+            if (icon.hasClass("fa-thumbs-down")){
+                icon.addClass("fa-thumbs-up").removeClass("fa-thumbs-down");
+            }else {
+                icon.addClass("fa-thumbs-down").removeClass("fa-thumbs-up");
+            }
+           
+});
 
 
 
-
-
-
-
+   
 
 
 

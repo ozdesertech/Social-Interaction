@@ -13,11 +13,14 @@ using PagedList;
 using System.Runtime.InteropServices;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.IO;
+using System.Threading.Tasks;
+using System.Collections.Concurrent;
 
 namespace sozluk123.Controllers
 {
 
-    static class Butter
+    static class Butter 
     {
         public static Guid counter;
 
@@ -25,19 +28,23 @@ namespace sozluk123.Controllers
 
         public static Guid entryid1;
 
+        
 
+        
     }
 
 
+    
 
     public class entriesController : Controller
     {
         private sozluk1Entities1 db = new sozluk1Entities1();
-
+        
 
         //[Authorize]
         public ActionResult Index123() // multiple model views in one single page razor
         {
+            
             try
             {
 
@@ -366,16 +373,7 @@ namespace sozluk123.Controllers
 
         }
 
-        public ActionResult Like(Guid id)
-        {
-            entry ent = db.entry.ToList().Find(u => u.ID == id);
-            //ent.kayit_tarih = null;
-            ent.post_like += 1;
-            db.SaveChanges();
-
-
-            return RedirectToAction("Index123");
-        }
+       
 
         public ActionResult CountRecords(Guid? id1)
         {
@@ -392,16 +390,43 @@ namespace sozluk123.Controllers
             return PartialView(ViewBag.q);
         }
 
-       
+
+
+
+        public static List<Guid> test1234 = new List<Guid> { 
+            Guid.Empty
+        };
+
+        
+
+
         public ActionResult Like1(Guid? id )
         {
+                
+
+           
+            var ent = db.entry.Where(x => x.ID == id).ToList();
+
+
+
+                if (test1234.Contains((Guid)id))
+                {
+                    ent.FirstOrDefault().post_like -= 1;
+                    test1234.Remove((Guid)id);
+                }
+                else if(!test1234.Contains((Guid)id))
+                {
+                    ent.FirstOrDefault().post_like += 1;
+                    test1234.Add((Guid)id);
+                }
+                db.SaveChanges();
+                return PartialView(ent);
+
+
            
 
-          
-            var ent = db.entry.Where(x => x.ID == id).ToList();
-            ent.FirstOrDefault().post_like += 1;         
-            db.SaveChanges();      
-            return PartialView(ent) ;
+
+
         }
 
         

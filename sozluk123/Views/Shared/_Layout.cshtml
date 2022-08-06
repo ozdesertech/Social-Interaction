@@ -81,7 +81,7 @@
                     <span class="icon-bar"></span>
 
                 </button>
-                @Html.ActionLink("Sozluk Demo Version 1.2", "Index123", "entries", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink(" Sozluk Demo Version 1.2", "Index123", "entries", new { area = "" }, new { @class = "navbar-brand fa fa-home" })
             </div>
 
 
@@ -90,19 +90,21 @@
                 <ul class="nav navbar-nav">
                     @{ if (isLoggedIn)
                                     {
-                        <li>@Html.ActionLink("Welcome " + @User.Identity.Name, "Index123", "entries")</li>
+                        <li>@Html.ActionLink(" Welcome " + @User.Identity.Name, "Index123", "entries",new { @class = "fa fa-user"})</li>
 
 
 
 
-                                        <li><a href="javascript:void(0);" onclick="OpenAddPopup1234();">Add New Entry</a></li>
+                                        <li><a href="javascript:void(0);" onclick="OpenAddPopup1234();" class="fa fa-plus">Add New Entry</a></li>
 
-                                                        <li>@Html.ActionLink("Signout", "Signout", "Accounts")</li> }
+                                                        <li>@Html.ActionLink(" Signout", "Signout", "Accounts",new { area= "" }, new { @class = " fa fa-sign-out"})</li> 
+                                                        
+                                                        }
                                                                     else
                                                                     {
-                                                        <li>@Html.ActionLink("Login", "Login", "Accounts")</li>
+                                                        <li>@Html.ActionLink(" Login", "Login", "Accounts", new { area = "" }, new { @class = " fa fa-sign-in" })</li>
 
-                                                                        <li>@Html.ActionLink("Register", "Signup", "Accounts")</li> } }
+                                                                        <li>@Html.ActionLink(" Register", "Signup", "Accounts", new { area = "" }, new { @class = " fa fa-user-plus" })</li> } }
                 </ul>
 
             </div>
