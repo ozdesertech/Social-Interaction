@@ -28,7 +28,7 @@ namespace sozluk123.Controllers
 
         public static Guid entryid1;
 
-        
+       
 
         
     }
@@ -390,46 +390,74 @@ namespace sozluk123.Controllers
             return PartialView(ViewBag.q);
         }
 
-
-
+        
+        
 
         public static List<Guid> test1234 = new List<Guid> { 
             Guid.Empty
         };
+        public static ConcurrentBag<Guid> bag = new ConcurrentBag<Guid>();
 
-        
+         static ConcurrentDictionary<Guid, Guid> dictionary = new ConcurrentDictionary<Guid, Guid>();
 
+        public static List<string> ttr = new List<string>();
+
+        public static Dictionary<string, List<string>> dict = new Dictionary<string, List<string>>();
 
         public ActionResult Like1(Guid? id )
         {
+
+            
+            ttr.Add(User.Identity.Name);
+            
+            foreach (var line123 in ttr)
+            {
+                 
+                if (!dict.ContainsKey(line123.ToString()))
+                {
+                    dict.Add(line123.ToString(), new List<string>());
+                }
+
                 
 
-           
+            }
+
+            List<string> aList = dict[User.Identity.Name.ToString()];
+
+        //    var guid = User.Identity.GetHashCode();
+        //    List<Guid> guids1 = new List<Guid> {
+        //    Guid.Empty
+        //};
+
+
             var ent = db.entry.Where(x => x.ID == id).ToList();
-
-
-
-                if (test1234.Contains((Guid)id))
+            //Guid newval1 ;
+            if (User.Identity.IsAuthenticated)
+            {
+                string guid1 = id.ToString();
+                if (aList.Contains(guid1))
                 {
                     ent.FirstOrDefault().post_like -= 1;
-                    test1234.Remove((Guid)id);
+                    aList.Remove(guid1);
                 }
-                else if(!test1234.Contains((Guid)id))
+                else if (!aList.Contains(guid1))
                 {
                     ent.FirstOrDefault().post_like += 1;
-                    test1234.Add((Guid)id);
+                    aList.Add(guid1);
                 }
-                db.SaveChanges();
+            }
+
+            db.SaveChanges();
                 return PartialView(ent);
 
 
+
+
+
+
            
 
-
-
         }
-
-        
 
         public JsonResult AddTeacher1234(entry teachers)
         {
