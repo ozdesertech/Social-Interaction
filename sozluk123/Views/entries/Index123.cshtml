@@ -38,7 +38,7 @@
 
                 @foreach (var item in Model.entries1)
                 {
-             
+            
 
 
             <table class="center">
@@ -61,14 +61,14 @@
 
             <tr>
                 <td>
+                    <div id="tres1">
 
+                        <p id="@item.ID.ToString()">
 
-                    <p id="@item.ID.ToString()">
+                            @item.post_like Likes
 
-                        @item.post_like Likes
-
-                    </p>
-
+                        </p>
+                    </div>
                 </td>
             </tr>}
 
@@ -296,7 +296,24 @@ else if (isLoggedIn == false)
 }
 
 
+<script type="text/javascript">
 
+    var myArray = [];
+
+    @foreach (var d in Model.entries1)
+    {
+        @:myArray.push("@d.ID.ToString()");
+    }
+  
+    $(document).ready(function () {
+        setInterval(function () {  
+            $.each(myArray, function (index, value) {  
+                $('#' + value).load(location.href + " #"+value);
+            });
+                }, 9000);
+    });
+       
+</script>
 
 
 <script type="text/javascript">
