@@ -7,7 +7,8 @@
     {
         isLoggedIn = false;
     }
-}
+    
+    }
 
 <link href="~/Content/general.css" rel="stylesheet" />
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
@@ -18,8 +19,6 @@
     .btn-default {
         background-color: transparent;
     }
-
-   
 </style>
 
 @{ ViewBag.title = "HELLO INDEX"; }
@@ -30,6 +29,9 @@
 </div>
 <hr>
 
+<div id="dataModel"><button onclick="getAll()">HELLO</button></div>
+
+
 <div class="body-content">
     <div class="row">
 
@@ -38,159 +40,160 @@
 
                 @foreach (var item in Model.entries1)
                 {
-            
 
 
-            <table class="center">
-                <tr>
-                    <td><p><b>@item.entry_ismi</b></p></td>
-                </tr>
-                <tr>
-                    <td><p>@item.entry_icerik </p></td>
-                </tr>
-                <tr>
-                    <td><p>username: <i>@item.yazar.yazar_ismi</i></p></td>
-                </tr>
-                <tr>
-                    <td><p><i>@item.kayit_tarih</i></p></td>
-                </tr>
+
+    <table id="pro1" class="center">
+
+        <tr>
+            <td><p><b>@item.entry_ismi</b></p></td>
+        </tr>
+        <tr>
+            <td><p>@item.entry_icerik </p></td>
+        </tr>
+        <tr>
+            <td><p>username: <i>@item.yazar.yazar_ismi</i></p></td>
+        </tr>
+        <tr>
+            <td><p><i>@item.kayit_tarih</i></p></td>
+        </tr>
 
 
-                @if (User.Identity.IsAuthenticated)
+        @if (User.Identity.IsAuthenticated)
+        {
+
+<tr>
+    <td>
+        <div id="tres1">
+
+            <p id="@item.ID.ToString()">
+
+                @item.post_like Likes
+
+            </p>
+        </div>
+    </td>
+</tr>
+}
+
+
+
+
+
+        <tr>
+
+            @if (isLoggedIn)
+            {
+<td>
+    <div class="btn-group" role="group" aria-label="Basic example">
+
+        @*@Html.ActionLink("+Add Comment", "setvalue", "entries", new { id = item.ID }, new { @class = "btn btn-primary ", onclick = "OpenAddPopup12345();", alt = "@item.ID" })*@
+
+        @Ajax.RawActionLink(string.Format("<i class='fa fa-thumbs-o-up'></i>"), "Like1", "entries", new { id = item.ID }, new AjaxOptions { HttpMethod = "GET", UpdateTargetId = @item.ID.ToString() }, new { @class = "btn btn-primary my-custom-class" })
+        @*@Ajax.ActionLink("Like", "Like1", "entries", new { id = item.ID }, new AjaxOptions { HttpMethod = "GET", UpdateTargetId = @item.ID.ToString() }, new { @class = "btn btn-primary  my-custom-class" })*@
+        <button id="btn1" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="return OpenAddPopupComment('+ @item.ID  +')"><i class="fa fa-comment"></i></button>
+
+
+        @foreach (var item4211 in Model.yazars1)
+        {
+            if (isLoggedIn)
+            {
+
+
+                if (item4211.yazar_ismi.Contains(User.Identity.Name))
                 {
-
-            <tr>
-                <td>
-                    <div id="tres1">
-
-                        <p id="@item.ID.ToString()">
-
-                            @item.post_like Likes
-
-                        </p>
-                    </div>
-                </td>
-            </tr>}
-
-
-
-
-
-                <tr>
-
-                    @if (isLoggedIn)
+                    if (item4211.ID == item.yazar_id)
                     {
+
+<button id="btn3" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="OpenUpdatePopup1('+ @item.ID  +')"> <i class="fa fa-edit"></i> </button>
+                                    <button id="btn4" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="DeleteTeacher('+ @item.ID +')"><i class="fa fa-trash"></i></button>}
+                            }
+
+                        }
+
+
+                    }
+
+    </div>
+
+</td>}
+
+        </tr>
+
+        <tr>
             <td>
-                <div class="btn-group" role="group" aria-label="Basic example">
-
-                    @*@Html.ActionLink("+Add Comment", "setvalue", "entries", new { id = item.ID }, new { @class = "btn btn-primary ", onclick = "OpenAddPopup12345();", alt = "@item.ID" })*@
-
-                    @Ajax.RawActionLink(string.Format("<i class='fa fa-thumbs-up'></i>"), "Like1", "entries", new { id = item.ID }, new AjaxOptions { HttpMethod = "GET", UpdateTargetId = @item.ID.ToString() }, new { @class = "btn btn-primary my-custom-class" })
-                    @*@Ajax.ActionLink("Like", "Like1", "entries", new { id = item.ID }, new AjaxOptions { HttpMethod = "GET", UpdateTargetId = @item.ID.ToString() }, new { @class = "btn btn-primary  my-custom-class" })*@
-                    <button id="btn1" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="return OpenAddPopupComment('+ @item.ID  +')"><i class="fa fa-comment"></i></button>
-
-
-                    @foreach (var item4211 in Model.yazars1)
-                    {
-                        if (isLoggedIn)
-                        {
+                <br>
+                <div class="accordion" id="col2">
+                    <div>
+                        <input type="checkbox" id="@item.ID.GetHashCode()" class="accordion__input">
+                        <label for="@item.ID.GetHashCode()" class="accordion__label">@{Html.RenderAction("CountRecords", "entries", new { id1 = item.ID });} Comments </label>
+                        <div class="accordion__content">
+                            <div style="background-color:white;">
+                                <div style="text-align:center">
+                                    @if (item.is_comment == false)
+                                    {
+                    <i>No Comments</i>}
 
 
-                            if (item4211.yazar_ismi.Contains(User.Identity.Name))
-                            {
-                                if (item4211.ID == item.yazar_id)
-                                {
+                                    @foreach (var item123 in Model.entry1yazar1.GroupBy(x => x.entry_ID).Select(x => x.FirstOrDefault()))
+                                    {
 
-            <button id="btn3" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="OpenUpdatePopup1('+ @item.ID  +')"> <i class="fa fa-edit"></i> </button>
-                                                <button id="btn4" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="DeleteTeacher('+ @item.ID +')"><i class="fa fa-trash"></i></button>}
-                                        }
 
+
+                                        if (item.ID == item123.entry_ID)
+                                        {
+
+
+                    <p><b>@item123.comment</b></p>
+                                            <p style="text-align:center">username: <i>@item123.yazar.yazar_ismi</i></p>
+                                                                    <p style="text-align:center"><i>@item123.kayit_tarih</i></p> foreach (var item421 in Model.yazars1)
+                                                                    {
+                                                                        if (isLoggedIn)
+                                                                        {
+                                                                            if (item421.yazar_ismi.Contains(User.Identity.Name))
+                                                                            {
+                                                                                if (item421.ID == item123.yazar_ID)
+                                                                                {
+
+                                            <div class="btn-group" role="group" aria-label="Basic example">
+                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="OpenUpdatePopup15('+ @item123.ID +')"> <i class="fa fa-edit"></i></button>
+                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="DeleteTeacher15('+@item123.ID+')"> <i class="fa fa-trash"></i></button>
+                                            </div> }
                                     }
-
 
                                 }
 
-                </div>
 
-            </td>
-           }
-
-                </tr>
-
-                <tr>
-                    <td>
-                        <br>
-                        <div class="accordion" id="col2">
-                            <div>
-                                <input type="checkbox" id="@item.ID.GetHashCode()" class="accordion__input">
-                                <label for="@item.ID.GetHashCode()" class="accordion__label">@{Html.RenderAction("CountRecords", "entries", new { id1 = item.ID });} Comments </label>
-                                <div class="accordion__content">
-                                    <div style="background-color:white;">
-                                        <div style="text-align:center">
-                                            @if (item.is_comment == false)
-                                            {
-                            <i>No Comments</i>}
+                            }
 
 
-                                            @foreach (var item123 in Model.entry1yazar1.GroupBy(x => x.entry_ID).Select(x => x.FirstOrDefault()))
-                                            {
+    <hr>}
 
 
 
-                                                if (item.ID == item123.entry_ID)
-                                                {
-
-
-                            <p><b>@item123.comment</b></p>
-                                                    <p style="text-align:center">username: <i>@item123.yazar.yazar_ismi</i></p>
-                                                                            <p style="text-align:center"><i>@item123.kayit_tarih</i></p> foreach (var item421 in Model.yazars1)
-                                                                            {
-                                                                                if (isLoggedIn)
-                                                                                {
-                                                                                    if (item421.yazar_ismi.Contains(User.Identity.Name))
-                                                                                    {
-                                                                                        if (item421.ID == item123.yazar_ID)
-                                                                                        {
-
-                                                    <div class="btn-group" role="group" aria-label="Basic example">
-                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="OpenUpdatePopup15('+ @item123.ID +')"> <i class="fa fa-edit"></i></button>
-                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="DeleteTeacher15('+@item123.ID+')"> <i class="fa fa-trash"></i></button>
-                                                    </div> }
-                                            }
-
-                                        }
-
-
-                                    }
-
-
-            <hr>}
-
-
-
-    }
-
-
-                                        </div>
-                                    </div>
-                                    @if (item.is_comment == true)
-                                    {
-                    <button id="btn3" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="return listloaddata('+ @item.ID  +')">Load More Comments  </button>}
-
+}
 
 
                                 </div>
-
                             </div>
+                            @if (item.is_comment == true)
+                            {
+            <button id="btn3" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="return listloaddata('+ @item.ID  +')">Load More Comments  </button>}
+
+
+
                         </div>
-                        <hr>
+
+                    </div>
+                </div>
+                <hr>
 
 
-                    </td>
-                </tr>
+            </td>
+        </tr>
 
-            </table>}
-                }
+    </table>}
+
 
 
             </div>
@@ -201,10 +204,21 @@
 <div id="divcontent">
 </div>
 
+
+
+
+
+
+
+<script src="~/Scripts/jquery-3.4.0.min.js"></script>
+<script src="~/Scripts/jquery.signalR-2.4.3.min.js"></script>
 <script src="~/Scripts/bootstrap.min.js"></script>
-<script src="~/Scripts/jquery-3.4.1.min.js"></script>
-<script src="~/Scripts/jquery-3.4.1.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
+
+
+
+
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -255,8 +269,20 @@
         });
     </script>*@
 
+
 <script type="text/javascript">
-                       
+
+
+
+
+
+
+
+</script>
+
+
+<script type="text/javascript">
+
 </script>
 
 @if (isLoggedIn)
@@ -278,7 +304,7 @@
                 confirmButtonText: 'Cool',
                 customClass: 'swal-wide',
             })
-            window.setTimeout(function () { location.reload() }, 4000)
+            window.setTimeout(function () { location.reload() }, 1500)
             //localStorage.clear();
         }
 
@@ -304,41 +330,97 @@ else if (isLoggedIn == false)
     {
         @:myArray.push("@d.ID.ToString()");
     }
-  
+
     $(document).ready(function () {
-        setInterval(function () {  
-            $.each(myArray, function (index, value) {  
+        setInterval(function () {
+            $.each(myArray, function (index, value) {
                 $('#' + value).load(location.href + " #"+value);
             });
                 }, 1000);
     });
-       
+
 </script>
 
 
+
+@*<script type="text/javascript">
+        function loaddata() {
+            $('#col213 div:not(.btn-group") ').load(location.href + " #col213 div:not()")
+        }
+
+        setInterval(function () {
+            loaddata()
+
+        }, 5000);
+    </script>*@
+
+@*<script src="~/Scripts/jquery-2.1.4.min.js"></script>*@
+<script src='/signalr/js'></script>
 <script type="text/javascript">
+    
+    console.log("test");
+    var hubNotify = $.connection.entriesHub;
+    console.log(hubNotify);
 
+    $.connection.hub.start().done(function () {
+        getAll();
+    });
+    hubNotify.client.refreshEmployeeData = function () {
+            getAll();
+        };
 
-
-
-
-
-
-
-        $('.my-custom-class').on('click', function () {
-            icon = $(this).find("i");
-            if (icon.hasClass("fa-thumbs-down")){
-                icon.addClass("fa-thumbs-up").removeClass("fa-thumbs-down");
-            }else {
-                icon.addClass("fa-thumbs-down").removeClass("fa-thumbs-up");
-            }
-            
-           
-});
-
-
-
+    
+       
+        
    
+
+        
+
+
+
+    //$(function () {
+
+
+
+
+    //    var hubNotify = $.connection.entriesHub;
+    //    console.log(hubNotify);
+    //});
+    //    $.connection.hub.start().done(function () {
+    //        getAll();
+    //    });
+
+    //    hubNotify.client.refreshEmployeeData = function () {
+    //        getAll();
+    //    };
+    //});
+
+
+
+    //$.connection.hub.start().done(function () {
+    //    getAll();
+    //});
+
+    //hubNotify.client.refreshEmployeeData = function () {
+    //    getAll();
+    //};
+
+
+
+    $('.my-custom-class').on('click', function () {
+        icon = $(this).find("i");
+        if (icon.hasClass("fa-thumbs-o-up")) {
+            icon.addClass("fa-thumbs-up").removeClass("fa-thumbs-o-up");
+        } else {
+            icon.addClass("fa-thumbs-o-up").removeClass("fa-thumbs-up");
+        }
+
+
+    });
+
+
+
+
 
 
 
@@ -362,6 +444,21 @@ else if (isLoggedIn == false)
         })
     })
 
+
+    function getAll() {
+
+        $.ajax({
+            url: '/entries/GetEmployeeData',
+            contentType: 'application/html ; charset:utf-8',
+            type: 'GET',
+            dataType: 'html',
+            success: function (result) {
+                $('#dataModel').empty();
+                $('#dataModel').html(result);
+
+            }
+        });
+    }
 
 
     function listloaddata(Id123) {

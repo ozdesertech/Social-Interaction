@@ -123,6 +123,7 @@ namespace sozluk123.Controllers
                     ent.yazar_ID = yazarid;
                     ent.entry_ID = Butter.entryval;
                     db.entry_yazar.Add(ent);
+                    
                     db.SaveChanges();
                
 
@@ -317,6 +318,14 @@ namespace sozluk123.Controllers
             }
         }
 
+        public ActionResult GetEmployeeData()
+        {
+            var a = db.entry_yazar.ToList();
+            return PartialView("_EmployeeData",a);
+        }
+
+
+
         public ActionResult listingloaddata(Guid? TeacherId)
         {
             var mts = new lstentries1();
@@ -424,25 +433,32 @@ namespace sozluk123.Controllers
 
             List<string> aList = dict[User.Identity.Name.ToString()];
 
-        //    var guid = User.Identity.GetHashCode();
-        //    List<Guid> guids1 = new List<Guid> {
-        //    Guid.Empty
-        //};
+            //    var guid = User.Identity.GetHashCode();
+            //    List<Guid> guids1 = new List<Guid> {
+            //    Guid.Empty
+            //};
 
-
-            var ent = db.entry.Where(x => x.ID == id).ToList();
+            var ent = new lstentries1();
+            // mts.entries1 = db.entry.ToList();
+            ent.yazars1 = db.yazar.ToList();
+            ent.baslik1 = db.baslik.ToList();
+            ent.entries1 = db.entry.Where(x => x.ID == id).ToList();
+            //mts.entry1yazar1 = db.entry_yazar.ToList();
+            ent.entry1yazar1 = db.entry_yazar.OrderByDescending(abc => abc.kayit_tarih).ToList();
+            
+            //var ent = db.entry.Where(x => x.ID == id).ToList();
             //Guid newval1 ;
             if (User.Identity.IsAuthenticated)
             {
                 string guid1 = id.ToString();
                 if (aList.Contains(guid1))
                 {
-                    ent.FirstOrDefault().post_like -= 1;
+                    ent.entries1.FirstOrDefault().post_like -= 1;
                     aList.Remove(guid1);
                 }
                 else if (!aList.Contains(guid1))
                 {
-                    ent.FirstOrDefault().post_like += 1;
+                    ent.entries1.FirstOrDefault().post_like += 1;
                     aList.Add(guid1);
                 }
             }
@@ -494,7 +510,9 @@ namespace sozluk123.Controllers
                 teachers.entry_ID = Butter.entryid1;
                 teachers.yazar_ID = yazarid;
                 db.entry_yazar.Add(teachers);
+               
                 db.SaveChanges();
+                EntriesHub.BroadcastData();
             }
             catch (Exception ex)
             {
