@@ -427,26 +427,26 @@ namespace sozluk123.Controllers
             db.Configuration.ProxyCreationEnabled = false;
             var ent = db.entry.Where(x => x.ID == id).ToList();
 
-            //ttr.Add(User.Identity.Name);
+            ttr.Add(User.Identity.Name);
 
-            //foreach (var line123 in ttr)
-            //{
+            foreach (var line123 in ttr)
+            {
 
-            //    if (!dict.ContainsKey(line123.ToString()))
-            //    {
-            //        dict.Add(line123.ToString(), new List<string>());
-            //    }
+                if (!dict.ContainsKey(line123.ToString()))
+                {
+                    dict.Add(line123.ToString(), new List<string>());
+                }
 
 
 
-            //}
+            }
 
-            //List<string> aList = dict[User.Identity.Name.ToString()];
+            List<string> aList = dict[User.Identity.Name.ToString()];
 
-            //    var guid = User.Identity.GetHashCode();
-            //    List<Guid> guids1 = new List<Guid> {
-            //    Guid.Empty
-            //};
+                var guid = User.Identity.GetHashCode();
+                List<Guid> guids1 = new List<Guid> {
+                    Guid.Empty
+                };
 
             //var ent = new lstentries1();
             //// mts.entries1 = db.entry.ToList();
@@ -458,15 +458,21 @@ namespace sozluk123.Controllers
 
             //var ent = db.entry.Where(x => x.ID == id).ToList();
             //Guid newval1 ;
-            if (test1234.Contains((Guid)id))
+            if (User.Identity.IsAuthenticated)
             {
-                ent.FirstOrDefault().post_like -= 1;
-                test1234.Remove((Guid)id);
-            }
-            else if (!test1234.Contains((Guid)id))
-            {
-                ent.FirstOrDefault().post_like += 1;
-                test1234.Add((Guid)id);
+                string guid1 = id.ToString();
+                if (aList.Contains(guid1))
+                {
+                    ent.FirstOrDefault().post_like -= 1;
+                    
+                    aList.Remove(guid1);
+                }
+                else if (!aList.Contains(guid1))
+                {
+                    ent.FirstOrDefault().post_like += 1;
+                    
+                    aList.Add(guid1);
+                }
             }
             db.SaveChanges();
             EntriesHub.BroadcastData();

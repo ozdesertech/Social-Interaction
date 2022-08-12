@@ -77,13 +77,13 @@
             {
 <td>
     <div class="btn-group" role="group" aria-label="Basic example">
-
+        <button id="btn66" class="btn btn-primary my-custom-class" data-toggle="modal" data-target="#myModal" onclick="return likecheck('+ @item.ID  +')"><i class="fa fa-thumbs-o-up"></i></button>
         @*@Html.ActionLink("+Add Comment", "setvalue", "entries", new { id = item.ID }, new { @class = "btn btn-primary ", onclick = "OpenAddPopup12345();", alt = "@item.ID" })*@
 
         @*@Ajax.RawActionLink(string.Format("<i class='fa fa-thumbs-o-up'></i>"), "Like1", "entries", new { id = item.ID }, new AjaxOptions { HttpMethod = "GET", UpdateTargetId = @item.ID.ToString() }, new { @class = "btn btn-primary my-custom-class" })*@
         @*@Ajax.ActionLink("Like", "Like1", "entries", new { id = item.ID }, new AjaxOptions { HttpMethod = "GET", UpdateTargetId = @item.ID.ToString() }, new { @class = "btn btn-primary  my-custom-class" })*@
         <button id="btn1" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="return OpenAddPopupComment('+ @item.ID  +')"><i class="fa fa-comment"></i></button>
-        <button id="@item.ID" class="btn btn-primary my-custom-class" data-toggle="modal" data-target="#myModal" onclick="return likecheck('+ @item.ID  +')"><i class="fa fa-thumbs-o-up"></i></button>
+
 
         @foreach (var item4211 in Model.yazars1)
         {
@@ -240,8 +240,9 @@
                 icon: 'success',
                 confirmButtonText: 'Cool',
                 customClass: 'swal-wide',
+                timer: 2000,
             })
-            window.setTimeout(function () { location.reload() }, 1500)
+            /*window.setTimeout(function () { location.reload() }, 1500)*/
             //localStorage.clear();
         }
 
@@ -344,20 +345,10 @@
    
 
 
-    function likecheck(Id123) {
-        var model = $('#dataModel1');
-        $.ajax({
-            url: '/entries/Like1?id=' + Id123,
-            
-            type: "POST",
-            contentType: "application/json;charset=utf-8",
-            dataType: "json",
-            success: function (result) { model.empty().append(result); }
-        });
-    }
+   
 
     $('.my-custom-class').on('click', function () {
-        icon = $(this).find("i");
+        icon = $(this).find("i")
         if (icon.hasClass("fa-thumbs-o-up")) {
             icon.addClass("fa-thumbs-up").removeClass("fa-thumbs-o-up");
         } else {
@@ -408,6 +399,20 @@
     //        }
     //    });
     //}
+
+
+    function likecheck(Id123) {
+        var model = $('#dataModel1');
+        $.ajax({
+            url: '/entries/Like1?id=' + Id123,
+
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) { model.empty().append(result); }
+        });
+    }
+
 
 
     function listloaddata(Id123) {
@@ -537,10 +542,11 @@
                     icon: 'success',
                     confirmButtonText: 'Cool',
                     customClass: 'swal-wide',
+                    timer:3000,
                 })
 
 
-                window.setTimeout(function () { location.reload() }, 1500)
+                /*window.setTimeout(function () { location.reload() }, 1500)*/
                 $('#AddUpdateModelPopup').modal('hide');
             },
             error: function (errormessage) {
@@ -576,8 +582,9 @@
                     icon: 'success',
                     confirmButtonText: 'Cool',
                     customClass: 'swal-wide',
+                    timer: 3000,
                 })
-                window.setTimeout(function () { location.reload() }, 1500)
+               /* window.setTimeout(function () { location.reload() }, 1500)*/
 
                 $('#AddUpdateModelPopup').modal('hide');
             },
@@ -617,8 +624,9 @@
                     icon: 'success',
                     confirmButtonText: 'Cool',
                     customClass: 'swal-wide',
+                    timer: 3000,
                 })
-                window.setTimeout(function () { location.reload() }, 1500)
+                /*window.setTimeout(function () { location.reload() }, 1500)*/
                 $('#AddUpdateModelPopup').modal('hide');
             },
             error: function (errormessage) {
@@ -657,8 +665,9 @@
                     icon: 'success',
                     confirmButtonText: 'Cool',
                     customClass: 'swal-wide',
+                    timer: 3000,
                 })
-                window.setTimeout(function () { location.reload() }, 1500)
+               /* window.setTimeout(function () { location.reload() }, 1500)*/
                 $('#AddUpdateModelPopup').modal('hide');
             },
             error: function (errormessage) {
@@ -737,8 +746,9 @@
                     icon: 'success',
                     confirmButtonText: 'Cool',
                     customClass: 'swal-wide',
+                    timer: 3000,
                 })
-                window.setTimeout(function () { location.reload() }, 1500)
+                /*window.setTimeout(function () { location.reload() }, 1500)*/
                 //BindteacherData();
                 $('#AddUpdateModelPopup').modal('hide');
             },
@@ -781,8 +791,9 @@
                     icon: 'success',
                     confirmButtonText: 'Cool',
                     customClass: 'swal-wide',
+                    timer: 3000,
                 })
-                window.setTimeout(function () { location.reload() }, 1500)
+                /*window.setTimeout(function () { location.reload() }, 1500)*/
                 $('#AddUpdateModelPopup').modal('hide');
             },
             error: function (errormessage) {
@@ -823,8 +834,9 @@
                     icon: 'success',
                     confirmButtonText: 'Cool',
                     customClass: 'swal-wide',
+                    timer: 3000,
                 })
-                window.setTimeout(function () { location.reload() }, 1500)
+               /* window.setTimeout(function () { location.reload() }, 1500)*/
                 $('#AddUpdateModelPopup').modal('hide');
             },
             error: function (errormessage) {
@@ -849,8 +861,9 @@
                         icon: 'success',
                         confirmButtonText: 'Cool',
                         customClass: 'swal-wide',
+                        timer: 3000,
                     })
-                    window.setTimeout(function () { location.reload() }, 1500)
+                    /*window.setTimeout(function () { location.reload() }, 1500)*/
                 },
                 error: function (errormessage) {
                     alert(errormessage.responseText);
@@ -875,8 +888,9 @@
                         icon: 'success',
                         confirmButtonText: 'Cool',
                         customClass: 'swal-wide',
+                        timer: 3000,
                     })
-                    window.setTimeout(function () { location.reload() }, 1500)
+                    /*window.setTimeout(function () { location.reload() }, 1500)*/
                 },
                 error: function (errormessage) {
                     alert(errormessage.responseText);
