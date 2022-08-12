@@ -1,8 +1,6 @@
-﻿@*@model IEnumerable<sozluk123.Models.entry>*@
+﻿@model IEnumerable<sozluk123.Models.entry>
 
-@using sozluk123.Models
-@*@model IEnumerable<sozluk123.Models.entry>*@
-@model lstentries1
+
 
 @*<style>
         .checkmark__circle {
@@ -59,7 +57,7 @@
     </style>*@
 
 
-@foreach (var item in Model.entries1)
+@foreach (var item in Model)
 {
 <div>
     @item.post_like Likes

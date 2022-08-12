@@ -14,8 +14,9 @@ namespace sozluk123.Models
 
 using System;
     using System.Collections.Generic;
-    
-public partial class entry
+    using System.Text.Json.Serialization;
+
+    public partial class entry
 {
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -42,9 +43,9 @@ public partial class entry
     public Nullable<System.DateTime> kayit_tarih { get; set; }
 
     public Nullable<bool> active { get; set; }
-
+    
     public Nullable<int> post_like { get; set; }
-
+   
     public Nullable<bool> is_comment { get; set; }
 
 

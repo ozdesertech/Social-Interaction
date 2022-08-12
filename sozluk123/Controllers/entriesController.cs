@@ -49,14 +49,13 @@ namespace sozluk123.Controllers
             {
 
                 //var abc = db.entry.ToList();
-                var mts = new lstentries1();
+                
                // mts.entries1 = db.entry.ToList();
-                mts.yazars1 = db.yazar.ToList();
-                mts.baslik1 = db.baslik.ToList();
-                mts.entries1 = db.entry.OrderByDescending(abc => abc.kayit_tarih).ToList();
+              
                 //mts.entry1yazar1 = db.entry_yazar.ToList();
-                mts.entry1yazar1 = db.entry_yazar.OrderByDescending(abc => abc.kayit_tarih).ToList();
-                return View(mts);
+                
+                
+                return View();
 
             }
             catch (Exception)
@@ -125,11 +124,11 @@ namespace sozluk123.Controllers
                     db.entry_yazar.Add(ent);
                     
                     db.SaveChanges();
-               
+                    EntriesHub.BroadcastData();
 
-               
+
                 //ViewBag.yazar_id = new SelectList(db.yazar, "ID", "yazar_ismi");
-                
+
             }
             catch (Exception ex)
             {
@@ -154,7 +153,7 @@ namespace sozluk123.Controllers
                 db.yazar.Add(teachers);
                 db.SaveChanges();
                 Butter.counter = teachers.ID;
-                
+                EntriesHub.BroadcastData();
             }
             catch (Exception ex)
             {
@@ -178,6 +177,7 @@ namespace sozluk123.Controllers
                 db.yazar.Attach(teachers);
                 db.Entry(teachers).State = EntityState.Modified;
                 db.SaveChanges();
+                EntriesHub.BroadcastData();
             }
             catch (Exception ex)
             {
@@ -320,8 +320,15 @@ namespace sozluk123.Controllers
 
         public ActionResult GetEmployeeData()
         {
-            var a = db.entry_yazar.ToList();
-            return PartialView("_EmployeeData",a);
+            var mts1 = new lstentries1();
+            // mts.entries1 = db.entry.ToList();
+            mts1.yazars1 = db.yazar.ToList();
+            mts1.baslik1 = db.baslik.ToList();
+            mts1.entries1 = db.entry.OrderByDescending(abc => abc.kayit_tarih).ToList();
+            //mts.entry1yazar1 = db.entry_yazar.ToList();
+            mts1.entry1yazar1 = db.entry_yazar.OrderByDescending(abc => abc.kayit_tarih).ToList();
+           
+            return PartialView("_EmployeeData",mts1);
         }
 
 
@@ -372,6 +379,7 @@ namespace sozluk123.Controllers
                 teachers.ID = Guid.NewGuid();
                 db.entry.Add(teachers);
                 db.SaveChanges();
+                EntriesHub.BroadcastData();
             }
             catch (Exception ex)
             {
@@ -413,65 +421,63 @@ namespace sozluk123.Controllers
 
         public static Dictionary<string, List<string>> dict = new Dictionary<string, List<string>>();
 
-        public ActionResult Like1(Guid? id )
+        
+        public JsonResult Like1(Guid? id )
         {
+            db.Configuration.ProxyCreationEnabled = false;
+            var ent = db.entry.Where(x => x.ID == id).ToList();
 
-            
-            ttr.Add(User.Identity.Name);
-            
-            foreach (var line123 in ttr)
-            {
-                 
-                if (!dict.ContainsKey(line123.ToString()))
-                {
-                    dict.Add(line123.ToString(), new List<string>());
-                }
+            //ttr.Add(User.Identity.Name);
 
-                
+            //foreach (var line123 in ttr)
+            //{
 
-            }
+            //    if (!dict.ContainsKey(line123.ToString()))
+            //    {
+            //        dict.Add(line123.ToString(), new List<string>());
+            //    }
 
-            List<string> aList = dict[User.Identity.Name.ToString()];
+
+
+            //}
+
+            //List<string> aList = dict[User.Identity.Name.ToString()];
 
             //    var guid = User.Identity.GetHashCode();
             //    List<Guid> guids1 = new List<Guid> {
             //    Guid.Empty
             //};
 
-            var ent = new lstentries1();
-            // mts.entries1 = db.entry.ToList();
-            ent.yazars1 = db.yazar.ToList();
-            ent.baslik1 = db.baslik.ToList();
-            ent.entries1 = db.entry.Where(x => x.ID == id).ToList();
-            //mts.entry1yazar1 = db.entry_yazar.ToList();
-            ent.entry1yazar1 = db.entry_yazar.OrderByDescending(abc => abc.kayit_tarih).ToList();
-            
+            //var ent = new lstentries1();
+            //// mts.entries1 = db.entry.ToList();
+            //ent.yazars1 = db.yazar.ToList();
+            //ent.baslik1 = db.baslik.ToList();
+            //ent.entries1 = db.entry.Where(x => x.ID == id).ToList();
+            ////mts.entry1yazar1 = db.entry_yazar.ToList();
+            //ent.entry1yazar1 = db.entry_yazar.OrderByDescending(abc => abc.kayit_tarih).ToList();
+
             //var ent = db.entry.Where(x => x.ID == id).ToList();
             //Guid newval1 ;
-            if (User.Identity.IsAuthenticated)
+            if (test1234.Contains((Guid)id))
             {
-                string guid1 = id.ToString();
-                if (aList.Contains(guid1))
-                {
-                    ent.entries1.FirstOrDefault().post_like -= 1;
-                    aList.Remove(guid1);
-                }
-                else if (!aList.Contains(guid1))
-                {
-                    ent.entries1.FirstOrDefault().post_like += 1;
-                    aList.Add(guid1);
-                }
+                ent.FirstOrDefault().post_like -= 1;
+                test1234.Remove((Guid)id);
             }
-
+            else if (!test1234.Contains((Guid)id))
+            {
+                ent.FirstOrDefault().post_like += 1;
+                test1234.Add((Guid)id);
+            }
             db.SaveChanges();
-                return PartialView(ent);
+            EntriesHub.BroadcastData();
+            return Json(ent, JsonRequestBehavior.AllowGet);
 
 
 
 
 
 
-           
+
 
         }
 
@@ -487,6 +493,7 @@ namespace sozluk123.Controllers
                 teachers.yazar_id = yazarid;
                 db.entry.Add(teachers);
                 db.SaveChanges();
+                EntriesHub.BroadcastData();
             }
             catch (Exception ex)
             {
@@ -538,6 +545,8 @@ namespace sozluk123.Controllers
                 ViewBag.yazar_id = new SelectList(db.yazar, "ID", "yazar_ismi");
                 db.Entry(teacher).State = EntityState.Modified;
                 db.SaveChanges();
+                EntriesHub.BroadcastData();
+
             }
             catch (Exception ex)
             {
@@ -556,6 +565,7 @@ namespace sozluk123.Controllers
                 ViewBag.yazar_id = new SelectList(db.yazar, "ID", "yazar_ismi");
                 db.Entry(teacher).State = EntityState.Modified;
                 db.SaveChanges();
+                EntriesHub.BroadcastData();
             }
             catch (Exception ex)
             {
@@ -573,6 +583,8 @@ namespace sozluk123.Controllers
                 var pateint = db.entry.Find(TeacherId);
                 db.entry.Remove(pateint);
                 db.SaveChanges();
+
+                EntriesHub.BroadcastData();
 
             }
             catch (Exception ex)
@@ -592,6 +604,7 @@ namespace sozluk123.Controllers
                 var pateint = db.entry_yazar.Find(TeacherId);
                 db.entry_yazar.Remove(pateint);
                 db.SaveChanges();
+                EntriesHub.BroadcastData();
 
             }
             catch (Exception ex)

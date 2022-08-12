@@ -1,32 +1,1136 @@
-﻿@model IEnumerable<sozluk123.Models.entry_yazar>
+﻿@using sozluk123.Models
+@*@model IEnumerable<sozluk123.Models.entry>*@
+@model lstentries1
+@{ bool isLoggedIn = true;
+    if (string.IsNullOrWhiteSpace(User.Identity.Name))
+    {
+        isLoggedIn = false;
+    } }
 
-<div>
-    <h4>entry_yazar</h4>
-    <hr />
-    <table class="table">
+<link href="~/Content/general.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script src="~/Scripts/linq.min.js"></script>
+<link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+
+<style>
+    .btn-default {
+        background-color: transparent;
+    }
+</style>
+
+@{ ViewBag.title = "HELLO INDEX"; }
+
+<br />
+<div class="col-md-6" style="float:none;margin:auto;">
+    <input type="text" id="txtsearch" placeholder="Search" class="form-control" style="max-width:100%" align="middle" />
+</div>
+<hr>
+
+
+
+
+<div class="body-content">
+    <div class="row">
+
+        <div id="col213" class="column" style="background-color: white;">
+            <div style="text-align:center">
+
+                @foreach (var item in Model.entries1)
+                {
+
+
+
+    <table id="pro1" class="center">
+
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.comment)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.kayit_tarih)
-            </th>
-           
-           
+            <td><p><b>@item.entry_ismi</b></p></td>
+        </tr>
+        <tr>
+            <td><p>@item.entry_icerik </p></td>
+        </tr>
+        <tr>
+            <td><p>username: <i>@item.yazar.yazar_ismi</i></p></td>
+        </tr>
+        <tr>
+            <td><p><i>@item.kayit_tarih</i></p></td>
         </tr>
 
-        @foreach (var item in Model)
+
+
+
+        <tr>
+            <td>
+                <div id="tres1">
+
+                    <p id="@item.ID.ToString()">
+
+                        @item.post_like Likes
+
+                    </p>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+
+            @if (isLoggedIn)
+            {
+<td>
+    <div class="btn-group" role="group" aria-label="Basic example">
+
+        @*@Html.ActionLink("+Add Comment", "setvalue", "entries", new { id = item.ID }, new { @class = "btn btn-primary ", onclick = "OpenAddPopup12345();", alt = "@item.ID" })*@
+
+        @*@Ajax.RawActionLink(string.Format("<i class='fa fa-thumbs-o-up'></i>"), "Like1", "entries", new { id = item.ID }, new AjaxOptions { HttpMethod = "GET", UpdateTargetId = @item.ID.ToString() }, new { @class = "btn btn-primary my-custom-class" })*@
+        @*@Ajax.ActionLink("Like", "Like1", "entries", new { id = item.ID }, new AjaxOptions { HttpMethod = "GET", UpdateTargetId = @item.ID.ToString() }, new { @class = "btn btn-primary  my-custom-class" })*@
+        <button id="btn1" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="return OpenAddPopupComment('+ @item.ID  +')"><i class="fa fa-comment"></i></button>
+        <button id="@item.ID" class="btn btn-primary my-custom-class" data-toggle="modal" data-target="#myModal" onclick="return likecheck('+ @item.ID  +')"><i class="fa fa-thumbs-o-up"></i></button>
+
+        @foreach (var item4211 in Model.yazars1)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.comment)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.kayit_tarih)
-                </td>
-                
-            </tr>
+            if (isLoggedIn)
+            {
+
+
+                if (item4211.yazar_ismi.Contains(User.Identity.Name))
+                {
+                    if (item4211.ID == item.yazar_id)
+                    {
+
+    <button id="btn3" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="OpenUpdatePopup1('+ @item.ID  +')"> <i class="fa fa-edit"></i> </button>
+                                        <button id="btn4" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="DeleteTeacher('+ @item.ID +')"><i class="fa fa-trash"></i></button>}
+                                }
+
+                            }
+
+
+                        }
+
+    </div>
+
+</td>
+}
+
+        </tr>
+
+        <tr>
+            <td>
+                <br>
+                <div class="accordion" id="col2">
+                    <div>
+                        <input type="checkbox" id="@item.ID.GetHashCode()" class="accordion__input">
+                        <label for="@item.ID.GetHashCode()" class="accordion__label">@{Html.RenderAction("CountRecords", "entries", new { id1 = item.ID });} Comments </label>
+                        <div class="accordion__content">
+                            <div style="background-color:white;">
+                                <div style="text-align:center">
+                                    @if (item.is_comment == false)
+                                    {
+                    <i>No Comments</i>}
+
+
+                                    @foreach (var item123 in Model.entry1yazar1.GroupBy(x => x.entry_ID).Select(x => x.FirstOrDefault()))
+                                    {
+
+
+
+                                        if (item.ID == item123.entry_ID)
+                                        {
+
+
+                    <p><b>@item123.comment</b></p>
+                                            <p style="text-align:center">username: <i>@item123.yazar.yazar_ismi</i></p>
+                                                                    <p style="text-align:center"><i>@item123.kayit_tarih</i></p> foreach (var item421 in Model.yazars1)
+                                                                    {
+                                                                        if (isLoggedIn)
+                                                                        {
+                                                                            if (item421.yazar_ismi.Contains(User.Identity.Name))
+                                                                            {
+                                                                                if (item421.ID == item123.yazar_ID)
+                                                                                {
+
+                                            <div class="btn-group" role="group" aria-label="Basic example">
+                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="OpenUpdatePopup15('+ @item123.ID +')"> <i class="fa fa-edit"></i></button>
+                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="DeleteTeacher15('+@item123.ID+')"> <i class="fa fa-trash"></i></button>
+                                            </div> }
+                                    }
+
+                                }
+
+
+                            }
+
+
+    <hr>}
+
+
+
+}
+
+
+                                </div>
+                            </div>
+                            @if (item.is_comment == true)
+                            {
+            <button id="btn3" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="return listloaddata('+ @item.ID  +')">Load More Comments  </button>}
+
+
+
+                        </div>
+
+                    </div>
+                </div>
+                <hr>
+
+
+            </td>
+        </tr>
+
+    </table>}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="divcontent">
+</div>
+
+<div id="dataModel1"></div>
+<script src="~/Scripts/jquery-3.4.0.min.js"></script>
+<script src="~/Scripts/jquery.signalR-2.4.3.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+
+
+
+
+
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+<script type="text/javascript">
+
+
+
+
+
+
+
+</script>
+
+
+<script type="text/javascript">
+
+</script>
+
+@if (isLoggedIn)
+{
+<script type="text/javascript">
+
+
+        //localStorage.clear();
+        var firstTime = localStorage.getItem("first_time2");
+        if (!firstTime) {
+            localStorage.setItem("first_time2", "1");
+
+
+
+            Swal.fire({
+                title: 'Welcome!',
+                text: '@User.Identity.Name',
+                icon: 'success',
+                confirmButtonText: 'Cool',
+                customClass: 'swal-wide',
+            })
+            window.setTimeout(function () { location.reload() }, 1500)
+            //localStorage.clear();
         }
 
-    </table>
-    </div>
+
+
+        //localStorage.clear();
+</script> }
+            else if (isLoggedIn == false)
+            {
+
+<script type="text/javascript">
+    localStorage.removeItem('first_time2');
+</script>}
+
+
+@*<script type="text/javascript">
+
+    var myArray = [];
+
+    @foreach (var d in Model.entries1)
+    {
+        @:myArray.push("@d.ID.ToString()");
+    }
+
+    $(document).ready(function () {
+        setInterval(function () {
+            $.each(myArray, function (index, value) {
+                $('#' + value).load(location.href + " #"+value);
+            });
+                }, 1000);
+    });
+
+</script>*@
+
+
+
+@*<script type="text/javascript">
+        function loaddata() {
+            $('#col213 div:not(.btn-group") ').load(location.href + " #col213 div:not()")
+        }
+
+        setInterval(function () {
+            loaddata()
+
+        }, 5000);
+    </script>*@
+
+@*<script src="~/Scripts/jquery-2.1.4.min.js"></script>*@
+<script src='/signalr/js'></script>
+<script type="text/javascript">
+
+    //console.log("test");
+    //var hubNotify = $.connection.entriesHub;
+    //console.log(hubNotify);
+
+    //$.connection.hub.start().done(function () {
+    //    getAll();
+    //});
+    //hubNotify.client.refreshEmployeeData = function () {
+    //    getAll();
+    //};
+
+
+
+
+
+
+
+
+
+
+    //$(function () {
+
+
+
+
+    //    var hubNotify = $.connection.entriesHub;
+    //    console.log(hubNotify);
+    //});
+    //    $.connection.hub.start().done(function () {
+    //        getAll();
+    //    });
+
+    //    hubNotify.client.refreshEmployeeData = function () {
+    //        getAll();
+    //    };
+    //});
+
+
+
+    //$.connection.hub.start().done(function () {
+    //    getAll();
+    //});
+
+    //hubNotify.client.refreshEmployeeData = function () {
+    //    getAll();
+    //};
+
+   
+   
+
+
+    function likecheck(Id123) {
+        var model = $('#dataModel1');
+        $.ajax({
+            url: '/entries/Like1?id=' + Id123,
+            
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) { model.empty().append(result); }
+        });
+    }
+
+    $('.my-custom-class').on('click', function () {
+        icon = $(this).find("i");
+        if (icon.hasClass("fa-thumbs-o-up")) {
+            icon.addClass("fa-thumbs-up").removeClass("fa-thumbs-o-up");
+        } else {
+            icon.addClass("fa-thumbs-o-up").removeClass("fa-thumbs-up");
+        }
+
+
+    });
+
+
+
+
+
+
+
+    $("#txtsearch").on("keyup", function () {
+        var txtenter = $(this).val();
+        $("table").each(function (results) {
+
+            if (results !== -1) {
+                var id = $(this).find("td").text();
+
+
+                if (id.indexOf(txtenter) !== 0 && id.toLowerCase().indexOf(txtenter.toLowerCase()) < 0) {
+                    $(this).hide();
+                }
+
+
+                else {
+                    $(this).show();
+                }
+            }
+        })
+    })
+
+
+    //function getAll() {
+
+    //    $.ajax({
+    //        url: '/entries/GetEmployeeData',
+    //        contentType: 'application/html ; charset:utf-8',
+    //        type: 'GET',
+    //        dataType: 'html',
+    //        success: function (result) {
+    //            $('#dataModel').empty();
+    //            $('#dataModel').html(result);
+
+    //        }
+    //    });
+    //}
+
+
+    function listloaddata(Id123) {
+        $.ajax({
+            url: '/entries/listingloaddata?TeacherId=' + Id123,
+            contentType: 'application/html; charset=utf-8',
+            type: 'GET',
+            dataType: 'html',
+            success: function (result) {
+                $('#divcontent').empty();
+                $('#divcontent').html(result);
+                $('#AddUpdateModelPopup').modal('show');
+            },
+            error: function (xhr, status) {
+                alert(status);
+            }
+        })
+    }
+
+
+    function OpenAddPopup12345() {
+
+        $.ajax({
+            url: '/entries/LoadaddTeacherPopup12345',
+            contentType: 'application/html; charset=utf-8',
+            type: 'GET',
+            dataType: 'html',
+            success: function (result) {
+                $('#divcontent').empty();
+                $('#divcontent').html(result);
+                $('#AddUpdateModelPopup').modal('show');
+            },
+            error: function (xhr, status) {
+                alert(status);
+            }
+        })
+    }
+
+
+    function OpenAddPopupComment(id1) {
+
+        $.ajax({
+            url: '/entries/LoadaddTeacherPopupComment1?TeacherId=' + id1,
+            contentType: 'application/html; charset=utf-8',
+            type: 'GET',
+            dataType: 'html',
+            success: function (result) {
+                $('#divcontent').empty();
+                $('#divcontent').html(result);
+                $('#AddUpdateModelPopup').modal('show');
+            },
+            error: function (xhr, status) {
+                alert(status);
+            }
+        })
+    }
+
+
+
+    function OpenAddPopup1234() {
+
+        $.ajax({
+            url: '/entries/LoadaddTeacherPopup1234',
+            contentType: 'application/html; charset=utf-8',
+            type: 'GET',
+            dataType: 'html',
+            success: function (result) {
+                $('#divcontent').empty();
+                $('#divcontent').html(result);
+                $('#AddUpdateModelPopup').modal('show');
+            },
+            error: function (xhr, status) {
+                alert(status);
+            }
+        })
+    }
+
+
+
+    function OpenAddPopup() {
+
+        $.ajax({
+            url: '/entries/LoadaddTeacherPopup1',
+            contentType: 'application/html; charset=utf-8',
+            type: 'GET',
+            dataType: 'html',
+            success: function (result) {
+                $('#divcontent').empty();
+                $('#divcontent').html(result);
+                $('#AddUpdateModelPopup').modal('show');
+            },
+            error: function (xhr, status) {
+                alert(status);
+            }
+        })
+    }
+
+
+    function AddTeacher12345() {
+        var res = ValidateForm122();
+        if (res == false) {
+            return false;
+        }
+
+        var TeacherObj = {
+            ID: $('#ID').val(),
+            entry_ID: $('#entry_ID').val(),
+            /*yazar_yorum: $('#yazar_yorum').val(),*/
+            yazar_ID: $('#yazar_ID').val(),
+            comment: $('#comment').val(),
+            kayit_tarih: $('#kayit_tarih').val(),
+            is_active: $('#is_active').val(),
+        };
+        $.ajax({
+            url: "/entries/AddComment",
+            data: JSON.stringify(TeacherObj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                //populate table with new record
+                //swal("Welcome!", "Your comment has been added", "success");
+
+                Swal.fire({
+                    title: 'Successful!',
+                    text: 'Your comment has been added',
+                    icon: 'success',
+                    confirmButtonText: 'Cool',
+                    customClass: 'swal-wide',
+                })
+
+
+                window.setTimeout(function () { location.reload() }, 1500)
+                $('#AddUpdateModelPopup').modal('hide');
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+    function AddTeacher() {
+        var res = ValidateForm();
+        if (res == false) {
+            return false;
+        }
+        var TeacherObj = {
+            ID: $('#ID').val(),
+            yazar_ismi: $('#yazar_ismi').val(),
+            /*yazar_yorum: $('#yazar_yorum').val(),*/
+            /* yazar_id: $('#yazar_id').val(),*/
+            kayit_tarih: $('#kayit_tarih').val(),
+            active: $('#active').val(),
+        };
+        $.ajax({
+            url: "/entries/AddTeacher1",
+            data: JSON.stringify(TeacherObj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                //populate table with new record
+                Swal.fire({
+                    title: 'Welcome!',
+                    text: 'Successful',
+                    icon: 'success',
+                    confirmButtonText: 'Cool',
+                    customClass: 'swal-wide',
+                })
+                window.setTimeout(function () { location.reload() }, 1500)
+
+                $('#AddUpdateModelPopup').modal('hide');
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+    function AddTeacher1234() {
+        var res = ValidateForm1234();
+        if (res == false) {
+            return false;
+        }
+        var TeacherObj = {
+            ID: $('#ID').val(),
+            entry_ismi: $('#entry_ismi').val(),
+            entry_icerik: $('#entry_icerik').val(),
+            /*yazar_yorum: $('#yazar_yorum').val(),*/
+            yazar_id: $('#yazar_id').val(),
+            kayit_tarih: $('#kayit_tarih').val(),
+            //post_like = $('#post_like').val(),
+            active: $('#active').val(),
+        };
+        $.ajax({
+            url: "/entries/AddTeacher1234",
+            data: JSON.stringify(TeacherObj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                //populate table with new record
+
+                Swal.fire({
+                    title: 'Successful!',
+                    text: 'Your comment has been added',
+                    icon: 'success',
+                    confirmButtonText: 'Cool',
+                    customClass: 'swal-wide',
+                })
+                window.setTimeout(function () { location.reload() }, 1500)
+                $('#AddUpdateModelPopup').modal('hide');
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+    function AddTeacherComment() {
+        var res = ValidateFormComment();
+        if (res == false) {
+            return false;
+        }
+        var TeacherObj = {
+            ID: $('#ID').val(),
+            entry_ID: $('#entry_ID').val(),
+            yazar_ID: $('#yazar_ID').val(),
+            /*yazar_yorum: $('#yazar_yorum').val(),*/
+            comment: $('#comment').val(),
+            kayit_tarih: $('#kayit_tarih').val(),
+            //post_like = $('#post_like').val(),
+            active: $('#active').val(),
+        };
+        $.ajax({
+            url: "/entries/AddTeacherComment",
+            data: JSON.stringify(TeacherObj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                //populate table with new record
+
+                Swal.fire({
+                    title: 'Successful!',
+                    text: 'Your comment has been added',
+                    icon: 'success',
+                    confirmButtonText: 'Cool',
+                    customClass: 'swal-wide',
+                })
+                window.setTimeout(function () { location.reload() }, 1500)
+                $('#AddUpdateModelPopup').modal('hide');
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+    function OpenUpdatePopup1(Id123) {
+        $.ajax({
+            url: '/entries/LoadEditTeacherPopup?TeacherId=' + Id123,
+            contentType: 'application/html; charset=utf-8',
+            type: 'GET',
+            dataType: 'html',
+            success: function (result) {
+                $('#divcontent').empty();
+                $('#divcontent').html(result);
+                $('#AddUpdateModelPopup').modal('show');
+                //$('#btndivuserguidemodel').trigger('click');
+
+            },
+            error: function (xhr, status) {
+                alert(status);
+            }
+        })
+    }
+
+    function OpenUpdatePopup15(Id123) {
+        $.ajax({
+            url: '/entries/LoadEditTeacherPopup15?TeacherId=' + Id123,
+            contentType: 'application/html; charset=utf-8',
+            type: 'GET',
+            dataType: 'html',
+            success: function (result) {
+                $('#divcontent').empty();
+                $('#divcontent').html(result);
+                $('#AddUpdateModelPopup').modal('show');
+                //$('#btndivuserguidemodel').trigger('click');
+
+            },
+            error: function (xhr, status) {
+                alert(status);
+            }
+        })
+    }
+
+    //function for updating Patient record
+    function UpdateTeacher() {
+        var res = ValidateForm1();
+        if (res == false) {
+            return false;
+        }
+        var TeacherObj = {
+            ID: $('#ID').val(),
+            yazar_ismi: $('#yazar_ismi').val(),
+            yazar_yorum: $('#yazar_yorum').val(),
+            /* yazar_id: $('#yazar_id').val(),*/
+            kayit_tarih: $('#kayit_tarih').val(),
+            active: $('#active').val(),
+        };
+        //if (!TeacherObj.Id || TeacherObj.Id <= 0) {
+        //    alert("Invalid Id!");
+        //    return false;
+        //}
+        $.ajax({
+            url: "/entries/Updateauthordetails",
+            data: JSON.stringify(TeacherObj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+
+                Swal.fire({
+                    title: 'Successful!',
+                    text: 'Your Data has been updated',
+                    icon: 'success',
+                    confirmButtonText: 'Cool',
+                    customClass: 'swal-wide',
+                })
+                window.setTimeout(function () { location.reload() }, 1500)
+                //BindteacherData();
+                $('#AddUpdateModelPopup').modal('hide');
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+    function UpdateTeacher1() {
+        var res = ValidateForm1234();
+        if (res == false) {
+            return false;
+        }
+        var TeacherObj = {
+            Id: $('#ID').val(),
+            entry_ismi: $('#entry_ismi').val(),
+            entry_icerik: $('#entry_icerik').val(),
+            yazar_id: $('#yazar_id').val(),
+            kayit_tarih: $('#kayit_tarih').val(),
+            post_like: $('#post_like').val(),
+            active: $('#active').val(),
+        };
+        //if (!TeacherObj.Id || TeacherObj.Id <= 0) {
+        //    alert("Invalid Id!");
+        //    return false;
+        //}
+        $.ajax({
+            url: "/entries/UpdateTeacher",
+            data: JSON.stringify(TeacherObj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+
+
+                Swal.fire({
+                    title: 'Successful!',
+                    text: 'Your Data has been updated',
+                    icon: 'success',
+                    confirmButtonText: 'Cool',
+                    customClass: 'swal-wide',
+                })
+                window.setTimeout(function () { location.reload() }, 1500)
+                $('#AddUpdateModelPopup').modal('hide');
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+    function UpdateTeacher15() {
+        var res = ValidateForm122();
+        if (res == false) {
+            return false;
+        }
+        var TeacherObj = {
+            ID: $('#ID').val(),
+            entry_ID: $('#entry_ID').val(),
+            yazar_ID: $('#yazar_ID').val(),
+            comment: $('#comment').val(),
+            kayit_tarih: $('#kayit_tarih').val(),
+            is_active: $('#is_active').val(),
+        };
+        //if (!TeacherObj.Id || TeacherObj.Id <= 0) {
+        //    alert("Invalid Id!");
+        //    return false;
+        //}
+        $.ajax({
+            url: "/entries/UpdateTeacher151",
+            data: JSON.stringify(TeacherObj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+
+
+                Swal.fire({
+                    title: 'Successful!',
+                    text: 'Your Data has been updated',
+                    icon: 'success',
+                    confirmButtonText: 'Cool',
+                    customClass: 'swal-wide',
+                })
+                window.setTimeout(function () { location.reload() }, 1500)
+                $('#AddUpdateModelPopup').modal('hide');
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+    function DeleteTeacher(ID) {
+        var ans = confirm("Are you sure you want to delete?");
+        if (ans) {
+            $.ajax({
+                url: "/entries/DeleteTeacher?TeacherId=" + ID,
+                type: "POST",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (result) {
+
+                    Swal.fire({
+                        title: 'Successful!',
+                        text: 'Your Data has been deleted',
+                        icon: 'success',
+                        confirmButtonText: 'Cool',
+                        customClass: 'swal-wide',
+                    })
+                    window.setTimeout(function () { location.reload() }, 1500)
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+    }
+
+    function DeleteTeacher15(ID) {
+        var ans = confirm("Are you sure you want to delete?");
+        if (ans) {
+            $.ajax({
+                url: "/entries/DeleteTeacher15?TeacherId=" + ID,
+                type: "POST",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (result) {
+
+                    Swal.fire({
+                        title: 'Successful!',
+                        text: 'Your Data has been deleted',
+                        icon: 'success',
+                        confirmButtonText: 'Cool',
+                        customClass: 'swal-wide',
+                    })
+                    window.setTimeout(function () { location.reload() }, 1500)
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+    }
+
+    function ValidateForm() {
+        var isValid = true;
+        if ($('#yazar_ismi').val().trim() == "") {
+            $('#yazar_ismi').css('border-color', 'Red');
+
+            isValid = false;
+        }
+        //else if ($('#yazar_ismi').val().startsWith("#")) {
+        //    $('#yazar_ismi').css('border-color', 'lightgrey');
+        //}
+
+
+        else {
+
+            $('#yazar_ismi').css('border-color', 'lightgrey');
+
+
+        }
+        //if ($('#yazar_yorum').val().trim() == "") {
+        //    $('#yazar_yorum').css('border-color', 'Red');
+        //    isValid = false;
+        //}
+        //else {
+        //    $('#yazar_yorum').css('border-color', 'lightgrey');
+        //}
+        //if ($('#yazar_id').val().trim() == "") {
+        //    $('#yazar_id').css('border-color', 'Red');
+        //    isValid = false;
+        //}
+        //else {
+        //    $('#yazar_id').css('border-color', 'lightgrey');
+        //}
+        //if ($('#kayit_tarih').val().trim() == "") {
+        //    $('#kayit_tarih').css('border-color', 'Red');
+        //    isValid = false;
+        //}
+        //else {
+        //    $('#kayit_tarih').css('border-color', 'lightgrey');
+        //}
+
+        //if ($('#active').val().trim() == "") {
+        //    $('#active').css('border-color', 'Red');
+        //    isValid = false;
+        //}
+        //else {
+        //    $('#active').css('border-color', 'lightgrey');
+        //}
+        return isValid;
+    }
+
+
+
+    function ValidateForm1() {
+        var isValid = true;
+        //if ($('#yazar_ismi').val().trim() == "") {
+        //    $('#yazar_ismi').css('border-color', 'Red');
+
+        //    isValid = false;
+        //}
+        //else if ($('#yazar_ismi').val().startsWith("#")) {
+        //    $('#yazar_ismi').css('border-color', 'lightgrey');
+        //}
+
+
+        //else {
+
+        //    $('#yazar_ismi').css('border-color', 'lightgrey');
+
+
+        //}
+        if ($('#yazar_yorum').val().trim() == "") {
+            $('#yazar_yorum').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#yazar_yorum').css('border-color', 'lightgrey');
+        }
+        //if ($('#yazar_id').val().trim() == "") {
+        //    $('#yazar_id').css('border-color', 'Red');
+        //    isValid = false;
+        //}
+        //else {
+        //    $('#yazar_id').css('border-color', 'lightgrey');
+        //}
+        //if ($('#kayit_tarih').val().trim() == "") {
+        //    $('#kayit_tarih').css('border-color', 'Red');
+        //    isValid = false;
+        //}
+        //else {
+        //    $('#kayit_tarih').css('border-color', 'lightgrey');
+        //}
+
+        //if ($('#active').val().trim() == "") {
+        //    $('#active').css('border-color', 'Red');
+        //    isValid = false;
+        //}
+        //else {
+        //    $('#active').css('border-color', 'lightgrey');
+        //}
+        return isValid;
+    }
+
+    function ValidateForm122() {
+        var isValid = true;
+        //if ($('#yazar_ismi').val().trim() == "") {
+        //    $('#yazar_ismi').css('border-color', 'Red');
+
+        //    isValid = false;
+        //}
+        //else if ($('#yazar_ismi').val().startsWith("#")) {
+        //    $('#yazar_ismi').css('border-color', 'lightgrey');
+        //}
+
+
+        //else {
+
+        //    $('#yazar_ismi').css('border-color', 'lightgrey');
+
+
+        //}
+        if ($('#comment').val().trim() == "") {
+            $('#comment').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#comment').css('border-color', 'lightgrey');
+        }
+        //if ($('#yazar_id').val().trim() == "") {
+        //    $('#yazar_id').css('border-color', 'Red');
+        //    isValid = false;
+        //}
+        //else {
+        //    $('#yazar_id').css('border-color', 'lightgrey');
+        //}
+        //if ($('#kayit_tarih').val().trim() == "") {
+        //    $('#kayit_tarih').css('border-color', 'Red');
+        //    isValid = false;
+        //}
+        //else {
+        //    $('#kayit_tarih').css('border-color', 'lightgrey');
+        //}
+
+        //if ($('#active').val().trim() == "") {
+        //    $('#active').css('border-color', 'Red');
+        //    isValid = false;
+        //}
+        //else {
+        //    $('#active').css('border-color', 'lightgrey');
+        //}
+        return isValid;
+    }
+
+
+    function ValidateForm1234() {
+        var isValid = true;
+        //if ($('#yazar_ismi').val().trim() == "") {
+        //    $('#yazar_ismi').css('border-color', 'Red');
+
+        //    isValid = false;
+        //}
+        //else if ($('#yazar_ismi').val().startsWith("#")) {
+        //    $('#yazar_ismi').css('border-color', 'lightgrey');
+        //}
+
+
+        //else {
+
+        //    $('#yazar_ismi').css('border-color', 'lightgrey');
+
+
+        //}
+        if ($('#entry_ismi').val().trim() == "") {
+            $('#entry_ismi').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#entry_ismi').css('border-color', 'lightgrey');
+        }
+        if ($('#entry_icerik').val().trim() == "") {
+            $('#entry_icerik').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#entry_icerik').css('border-color', 'lightgrey');
+        }
+        //if ($('#yazar_id').val().trim() == "") {
+        //    $('#yazar_id').css('border-color', 'Red');
+        //    isValid = false;
+        //}
+        //else {
+        //    $('#yazar_id').css('border-color', 'lightgrey');
+        //}
+
+        //if ($('#kayit_tarih').val().trim() == "") {
+        //    $('#kayit_tarih').css('border-color', 'Red');
+        //    isValid = false;
+        //}
+        //else {
+        //    $('#kayit_tarih').css('border-color', 'lightgrey');
+        //}
+        return isValid;
+    }
+
+    function ValidateFormComment() {
+        var isValid = true;
+        //if ($('#yazar_ismi').val().trim() == "") {
+        //    $('#yazar_ismi').css('border-color', 'Red');
+
+        //    isValid = false;
+        //}
+        //else if ($('#yazar_ismi').val().startsWith("#")) {
+        //    $('#yazar_ismi').css('border-color', 'lightgrey');
+        //}
+
+
+        //else {
+
+        //    $('#yazar_ismi').css('border-color', 'lightgrey');
+
+
+        //}
+        if ($('#comment').val().trim() == "") {
+            $('#comment').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#comment').css('border-color', 'lightgrey');
+        }
+
+        //if ($('#yazar_id').val().trim() == "") {
+        //    $('#yazar_id').css('border-color', 'Red');
+        //    isValid = false;
+        //}
+        //else {
+        //    $('#yazar_id').css('border-color', 'lightgrey');
+        //}
+
+        //if ($('#kayit_tarih').val().trim() == "") {
+        //    $('#kayit_tarih').css('border-color', 'Red');
+        //    isValid = false;
+        //}
+        //else {
+        //    $('#kayit_tarih').css('border-color', 'lightgrey');
+        //}
+        return isValid;
+    }
+
+
+</script>
