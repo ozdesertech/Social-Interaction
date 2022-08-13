@@ -46,6 +46,16 @@ public partial class sozluk1Entities1 : DbContext
 
     public virtual DbSet<Users> Users { get; set; }
 
+    public virtual DbSet<captured_columns> captured_columns { get; set; }
+
+    public virtual DbSet<change_tables> change_tables { get; set; }
+
+    public virtual DbSet<ddl_history> ddl_history { get; set; }
+
+    public virtual DbSet<index_columns> index_columns { get; set; }
+
+    public virtual DbSet<lsn_time_mapping> lsn_time_mapping { get; set; }
+
 }
 
 }

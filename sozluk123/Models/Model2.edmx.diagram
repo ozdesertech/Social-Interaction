@@ -16,6 +16,11 @@
         <AssociationConnector Association="sozluk1Model1.FK_entry_yazar_entry" />
         <AssociationConnector Association="sozluk1Model1.FK_entry_yazar_yazar" />
         <EntityTypeShape EntityType="sozluk1Model1.Users" Width="1.5" PointX="0.75" PointY="7.75" />
+        <EntityTypeShape EntityType="sozluk1Model1.captured_columns" Width="1.5" PointX="7.375" PointY="3.75" />
+        <EntityTypeShape EntityType="sozluk1Model1.change_tables" Width="1.5" PointX="7.375" PointY="7.75" />
+        <EntityTypeShape EntityType="sozluk1Model1.ddl_history" Width="1.5" PointX="8.375" PointY="0.75" />
+        <EntityTypeShape EntityType="sozluk1Model1.index_columns" Width="1.5" PointX="9.375" PointY="3.75" />
+        <EntityTypeShape EntityType="sozluk1Model1.lsn_time_mapping" Width="1.5" PointX="9.375" PointY="6.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

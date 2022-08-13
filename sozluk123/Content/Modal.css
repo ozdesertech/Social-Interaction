@@ -4,6 +4,9 @@
 }
 
 .modal {
-    background: rgba(000, 000, 000, 0.8);
+    background: transparent;
     min-height: 1000000px;
 }
+
+
+

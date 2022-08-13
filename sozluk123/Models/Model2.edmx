@@ -5,16 +5,80 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="sozluk1Model1.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="captured_columns">
+          <Key>
+            <PropertyRef Name="object_id" />
+            <PropertyRef Name="column_ordinal" />
+          </Key>
+          <Property Name="object_id" Type="int" Nullable="false" />
+          <Property Name="column_name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="column_id" Type="int" />
+          <Property Name="column_type" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="column_ordinal" Type="int" Nullable="false" />
+          <Property Name="is_computed" Type="bit" />
+          <Property Name="masking_function" Type="nvarchar" MaxLength="4000" />
+        </EntityType>
+        <EntityType Name="change_tables">
+          <Key>
+            <PropertyRef Name="object_id" />
+          </Key>
+          <Property Name="object_id" Type="int" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="source_object_id" Type="int" />
+          <Property Name="capture_instance" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="start_lsn" Type="binary" MaxLength="10" />
+          <Property Name="end_lsn" Type="binary" MaxLength="10" />
+          <Property Name="supports_net_changes" Type="bit" />
+          <Property Name="has_drop_pending" Type="bit" />
+          <Property Name="role_name" Type="nvarchar" MaxLength="128" />
+          <Property Name="index_name" Type="nvarchar" MaxLength="128" />
+          <Property Name="filegroup_name" Type="nvarchar" MaxLength="128" />
+          <Property Name="create_date" Type="datetime" />
+          <Property Name="partition_switch" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ddl_history">
+          <Key>
+            <PropertyRef Name="object_id" />
+            <PropertyRef Name="ddl_lsn" />
+          </Key>
+          <Property Name="source_object_id" Type="int" />
+          <Property Name="object_id" Type="int" Nullable="false" />
+          <Property Name="required_column_update" Type="bit" />
+          <Property Name="ddl_command" Type="nvarchar(max)" />
+          <Property Name="ddl_lsn" Type="binary" MaxLength="10" Nullable="false" />
+          <Property Name="ddl_time" Type="datetime" />
+        </EntityType>
+        <EntityType Name="index_columns">
+          <Key>
+            <PropertyRef Name="object_id" />
+            <PropertyRef Name="index_ordinal" />
+            <PropertyRef Name="column_id" />
+          </Key>
+          <Property Name="object_id" Type="int" Nullable="false" />
+          <Property Name="column_name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="index_ordinal" Type="tinyint" Nullable="false" />
+          <Property Name="column_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="lsn_time_mapping">
+          <Key>
+            <PropertyRef Name="start_lsn" />
+          </Key>
+          <Property Name="start_lsn" Type="binary" MaxLength="10" Nullable="false" />
+          <Property Name="tran_begin_time" Type="datetime" />
+          <Property Name="tran_end_time" Type="datetime" />
+          <Property Name="tran_id" Type="varbinary" MaxLength="10" />
+          <Property Name="tran_begin_lsn" Type="binary" MaxLength="10" />
+        </EntityType>
         <EntityType Name="baslik">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="baslik_ismi" Type="varchar" MaxLength="50" />
-          <Property Name="baslik_icerik" Type="varchar" MaxLength="50" />
           <Property Name="yazar_id" Type="uniqueidentifier" />
           <Property Name="kayit_tarih" Type="datetime" StoreGeneratedPattern="Computed" />
           <Property Name="active" Type="bit" />
+          <Property Name="baslik_icerik" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="entry">
           <Key>
@@ -25,8 +89,8 @@
           <Property Name="entry_icerik" Type="varchar" MaxLength="300" />
           <Property Name="yazar_id" Type="uniqueidentifier" />
           <Property Name="kayit_tarih" Type="datetime" StoreGeneratedPattern="Computed" />
-          <Property Name="post_like" Type="int" />
           <Property Name="active" Type="bit" />
+          <Property Name="post_like" Type="int" />
           <Property Name="is_comment" Type="bit" />
         </EntityType>
         <EntityType Name="entry_yazar">
@@ -37,8 +101,8 @@
           <Property Name="entry_ID" Type="uniqueidentifier" />
           <Property Name="yazar_ID" Type="uniqueidentifier" />
           <Property Name="comment" Type="varchar" MaxLength="500" />
-          <Property Name="kayit_tarih" Type="datetime" />
           <Property Name="is_active" Type="bit" />
+          <Property Name="kayit_tarih" Type="datetime" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -100,6 +164,20 @@ warning 6002: The table/view 'sozluk1.dbo.systranschemas' does not have a primar
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_entry_yazar">
+          <End Role="yazar" Type="Self.yazar" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="entry" Type="Self.entry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="yazar">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="entry">
+              <PropertyRef Name="yazar_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_entry_yazar_entry">
           <End Role="entry" Type="Self.entry" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -115,9 +193,7 @@ warning 6002: The table/view 'sozluk1.dbo.systranschemas' does not have a primar
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_entry_yazar_yazar">
-          <End Role="yazar" Type="Self.yazar" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
+          <End Role="yazar" Type="Self.yazar" Multiplicity="0..1" />
           <End Role="entry_yazar" Type="Self.entry_yazar" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="yazar">
@@ -129,6 +205,11 @@ warning 6002: The table/view 'sozluk1.dbo.systranschemas' does not have a primar
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="sozluk1Model1StoreContainer">
+          <EntitySet Name="captured_columns" EntityType="Self.captured_columns" Schema="cdc" store:Type="Tables" />
+          <EntitySet Name="change_tables" EntityType="Self.change_tables" Schema="cdc" store:Type="Tables" />
+          <EntitySet Name="ddl_history" EntityType="Self.ddl_history" Schema="cdc" store:Type="Tables" />
+          <EntitySet Name="index_columns" EntityType="Self.index_columns" Schema="cdc" store:Type="Tables" />
+          <EntitySet Name="lsn_time_mapping" EntityType="Self.lsn_time_mapping" Schema="cdc" store:Type="Tables" />
           <EntitySet Name="baslik" EntityType="Self.baslik" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="entry" EntityType="Self.entry" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="entry_yazar" EntityType="Self.entry_yazar" Schema="dbo" store:Type="Tables" />
@@ -146,6 +227,10 @@ warning 6002: The table/view 'sozluk1.dbo.systranschemas' does not have a primar
           <AssociationSet Name="FK_baslik_yazar" Association="Self.FK_baslik_yazar">
             <End Role="yazar" EntitySet="yazar" />
             <End Role="baslik" EntitySet="baslik" />
+          </AssociationSet>
+          <AssociationSet Name="FK_entry_yazar" Association="Self.FK_entry_yazar">
+            <End Role="yazar" EntitySet="yazar" />
+            <End Role="entry" EntitySet="entry" />
           </AssociationSet>
           <AssociationSet Name="FK_entry_yazar_entry" Association="Self.FK_entry_yazar_entry">
             <End Role="entry" EntitySet="entry" />
@@ -258,6 +343,11 @@ warning 6002: The table/view 'sozluk1.dbo.systranschemas' does not have a primar
             <End Role="entry_yazar" EntitySet="entry_yazar" />
           </AssociationSet>
           <EntitySet Name="Users" EntityType="sozluk1Model1.Users" />
+          <EntitySet Name="captured_columns" EntityType="sozluk1Model1.captured_columns" />
+          <EntitySet Name="change_tables" EntityType="sozluk1Model1.change_tables" />
+          <EntitySet Name="ddl_history" EntityType="sozluk1Model1.ddl_history" />
+          <EntitySet Name="index_columns" EntityType="sozluk1Model1.index_columns" />
+          <EntitySet Name="lsn_time_mapping" EntityType="sozluk1Model1.lsn_time_mapping" />
           </EntityContainer>
         <EntityType Name="systranschemas">
           <Key>
@@ -319,6 +409,70 @@ warning 6002: The table/view 'sozluk1.dbo.systranschemas' does not have a primar
           <Property Name="kayit_tarih" Type="DateTime" Precision="3" />
           <Property Name="active" Type="Boolean" />
           <Property Name="ResetPasswordCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="captured_columns">
+          <Key>
+            <PropertyRef Name="object_id" />
+            <PropertyRef Name="column_ordinal" />
+          </Key>
+          <Property Name="object_id" Type="Int32" Nullable="false" />
+          <Property Name="column_name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="column_id" Type="Int32" />
+          <Property Name="column_type" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="column_ordinal" Type="Int32" Nullable="false" />
+          <Property Name="is_computed" Type="Boolean" />
+          <Property Name="masking_function" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="change_tables">
+          <Key>
+            <PropertyRef Name="object_id" />
+          </Key>
+          <Property Name="object_id" Type="Int32" Nullable="false" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="source_object_id" Type="Int32" />
+          <Property Name="capture_instance" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="start_lsn" Type="Binary" MaxLength="10" FixedLength="true" />
+          <Property Name="end_lsn" Type="Binary" MaxLength="10" FixedLength="true" />
+          <Property Name="supports_net_changes" Type="Boolean" />
+          <Property Name="has_drop_pending" Type="Boolean" />
+          <Property Name="role_name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="index_name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="filegroup_name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="create_date" Type="DateTime" Precision="3" />
+          <Property Name="partition_switch" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ddl_history">
+          <Key>
+            <PropertyRef Name="object_id" />
+            <PropertyRef Name="ddl_lsn" />
+          </Key>
+          <Property Name="source_object_id" Type="Int32" />
+          <Property Name="object_id" Type="Int32" Nullable="false" />
+          <Property Name="required_column_update" Type="Boolean" />
+          <Property Name="ddl_command" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ddl_lsn" Type="Binary" Nullable="false" MaxLength="10" FixedLength="true" />
+          <Property Name="ddl_time" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="index_columns">
+          <Key>
+            <PropertyRef Name="object_id" />
+            <PropertyRef Name="index_ordinal" />
+            <PropertyRef Name="column_id" />
+          </Key>
+          <Property Name="object_id" Type="Int32" Nullable="false" />
+          <Property Name="column_name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="index_ordinal" Type="Byte" Nullable="false" />
+          <Property Name="column_id" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="lsn_time_mapping">
+          <Key>
+            <PropertyRef Name="start_lsn" />
+          </Key>
+          <Property Name="start_lsn" Type="Binary" Nullable="false" MaxLength="10" FixedLength="true" />
+          <Property Name="tran_begin_time" Type="DateTime" Precision="3" />
+          <Property Name="tran_end_time" Type="DateTime" Precision="3" />
+          <Property Name="tran_id" Type="Binary" MaxLength="10" FixedLength="false" />
+          <Property Name="tran_begin_lsn" Type="Binary" MaxLength="10" FixedLength="true" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -406,6 +560,71 @@ warning 6002: The table/view 'sozluk1.dbo.systranschemas' does not have a primar
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Username" ColumnName="Username" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="captured_columns">
+            <EntityTypeMapping TypeName="sozluk1Model1.captured_columns">
+              <MappingFragment StoreEntitySet="captured_columns">
+                <ScalarProperty Name="masking_function" ColumnName="masking_function" />
+                <ScalarProperty Name="is_computed" ColumnName="is_computed" />
+                <ScalarProperty Name="column_ordinal" ColumnName="column_ordinal" />
+                <ScalarProperty Name="column_type" ColumnName="column_type" />
+                <ScalarProperty Name="column_id" ColumnName="column_id" />
+                <ScalarProperty Name="column_name" ColumnName="column_name" />
+                <ScalarProperty Name="object_id" ColumnName="object_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="change_tables">
+            <EntityTypeMapping TypeName="sozluk1Model1.change_tables">
+              <MappingFragment StoreEntitySet="change_tables">
+                <ScalarProperty Name="partition_switch" ColumnName="partition_switch" />
+                <ScalarProperty Name="create_date" ColumnName="create_date" />
+                <ScalarProperty Name="filegroup_name" ColumnName="filegroup_name" />
+                <ScalarProperty Name="index_name" ColumnName="index_name" />
+                <ScalarProperty Name="role_name" ColumnName="role_name" />
+                <ScalarProperty Name="has_drop_pending" ColumnName="has_drop_pending" />
+                <ScalarProperty Name="supports_net_changes" ColumnName="supports_net_changes" />
+                <ScalarProperty Name="end_lsn" ColumnName="end_lsn" />
+                <ScalarProperty Name="start_lsn" ColumnName="start_lsn" />
+                <ScalarProperty Name="capture_instance" ColumnName="capture_instance" />
+                <ScalarProperty Name="source_object_id" ColumnName="source_object_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="object_id" ColumnName="object_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ddl_history">
+            <EntityTypeMapping TypeName="sozluk1Model1.ddl_history">
+              <MappingFragment StoreEntitySet="ddl_history">
+                <ScalarProperty Name="ddl_time" ColumnName="ddl_time" />
+                <ScalarProperty Name="ddl_lsn" ColumnName="ddl_lsn" />
+                <ScalarProperty Name="ddl_command" ColumnName="ddl_command" />
+                <ScalarProperty Name="required_column_update" ColumnName="required_column_update" />
+                <ScalarProperty Name="object_id" ColumnName="object_id" />
+                <ScalarProperty Name="source_object_id" ColumnName="source_object_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="index_columns">
+            <EntityTypeMapping TypeName="sozluk1Model1.index_columns">
+              <MappingFragment StoreEntitySet="index_columns">
+                <ScalarProperty Name="column_id" ColumnName="column_id" />
+                <ScalarProperty Name="index_ordinal" ColumnName="index_ordinal" />
+                <ScalarProperty Name="column_name" ColumnName="column_name" />
+                <ScalarProperty Name="object_id" ColumnName="object_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="lsn_time_mapping">
+            <EntityTypeMapping TypeName="sozluk1Model1.lsn_time_mapping">
+              <MappingFragment StoreEntitySet="lsn_time_mapping">
+                <ScalarProperty Name="tran_begin_lsn" ColumnName="tran_begin_lsn" />
+                <ScalarProperty Name="tran_id" ColumnName="tran_id" />
+                <ScalarProperty Name="tran_end_time" ColumnName="tran_end_time" />
+                <ScalarProperty Name="tran_begin_time" ColumnName="tran_begin_time" />
+                <ScalarProperty Name="start_lsn" ColumnName="start_lsn" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

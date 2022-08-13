@@ -20,23 +20,24 @@ using System;
     public partial class Users
 {
 
-    public System.Guid ID { get; set; }
+        public System.Guid ID { get; set; }
 
-     [Required]
-     [Remote("IsUserNameAvailable", "Accounts", ErrorMessage = "Username already exists")]
-     [RegularExpression(@"^[a-z]{8,16}?$", ErrorMessage = "A User Name must consist of 8-16 lowercase letters")]
-     public string Username { get; set; }
-     [Required]
-     [Remote("IsEmailAvailable", "Accounts", ErrorMessage = "Email already exists")]
-     [EmailAddress(ErrorMessage = "Invalid Email Address")]
-     [RegularExpression(@"^([0-9a-zA-Z]([\+\-_\.][0-9a-zA-Z]+)*)+@(([0-9a-zA-Z][-\w]*[0-9a-zA-Z]*\.)+[a-zA-Z0-9]{2,3})$", ErrorMessage = "Your email address is not in a valid format. Example of correct format: joe.example@example.org")]
-     public string Email { get; set; }
-     [Required]
-     [DataType(DataType.Password)]
+        [Required]
+        [Remote("IsUserNameAvailable", "Accounts", ErrorMessage = "Username already exists")]
+        [RegularExpression(@"^[a-z]{8,16}?$", ErrorMessage = "A User Name must consist of 8-16 lowercase letters")]
+        public string Username { get; set; }
+        [Required]
+        [Remote("IsEmailAvailable", "Accounts", ErrorMessage = "Email already exists")]
+        [EmailAddress(ErrorMessage = "Invalid Email Address")]
+        [RegularExpression(@"^([0-9a-zA-Z]([\+\-_\.][0-9a-zA-Z]+)*)+@(([0-9a-zA-Z][-\w]*[0-9a-zA-Z]*\.)+[a-zA-Z0-9]{2,3})$", ErrorMessage = "Your email address is not in a valid format. Example of correct format: joe.example@example.org")]
+        public string Email { get; set; }
+        [Required]
+        [DataType(DataType.Password)]
 
-    public string Passcode { get; set; }
+        public string Passcode { get; set; }
 
-    public Nullable<System.DateTime> kayit_tarih { get; set; }
+
+        public Nullable<System.DateTime> kayit_tarih { get; set; }
 
     public Nullable<bool> active { get; set; }
 

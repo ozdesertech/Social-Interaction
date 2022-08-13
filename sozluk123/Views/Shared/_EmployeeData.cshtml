@@ -16,8 +16,10 @@
     .btn-default {
         background-color: transparent;
     }
-</style>
 
+
+</style>
+<script> $('.modal-backdrop').remove(); </script>
 @{ ViewBag.title = "HELLO INDEX"; }
 
 <br />
@@ -234,14 +236,14 @@
 
 
 
-            Swal.fire({
+            @*Swal.fire({
                 title: 'Welcome!',
                 text: '@User.Identity.Name',
                 icon: 'success',
                 confirmButtonText: 'Cool',
                 customClass: 'swal-wide',
                 timer: 2000,
-            })
+            })*@
             /*window.setTimeout(function () { location.reload() }, 1500)*/
             //localStorage.clear();
         }
@@ -536,14 +538,15 @@
                 //populate table with new record
                 //swal("Welcome!", "Your comment has been added", "success");
 
-                Swal.fire({
-                    title: 'Successful!',
-                    text: 'Your comment has been added',
-                    icon: 'success',
-                    confirmButtonText: 'Cool',
-                    customClass: 'swal-wide',
-                    timer:3000,
-                })
+                //Swal.fire({
+                //    title: 'Successful!',
+                //    text: 'Your comment has been added',
+                //    icon: 'success',
+                //    confirmButtonText: 'Cool',
+                //    customClass: 'swal-wide',
+                //    backdrop: false,
+                //    timer:3000,
+                //})
 
 
                 /*window.setTimeout(function () { location.reload() }, 1500)*/
@@ -576,14 +579,14 @@
             dataType: "json",
             success: function (result) {
                 //populate table with new record
-                Swal.fire({
-                    title: 'Welcome!',
-                    text: 'Successful',
-                    icon: 'success',
-                    confirmButtonText: 'Cool',
-                    customClass: 'swal-wide',
-                    timer: 3000,
-                })
+                ////Swal.fire({
+                ////    title: 'Welcome!',
+                ////    text: 'Successful',
+                ////    icon: 'success',
+                ////    confirmButtonText: 'Cool',
+                ////    customClass: 'swal-wide',
+                ////    timer: 3000,
+                ////})
                /* window.setTimeout(function () { location.reload() }, 1500)*/
 
                 $('#AddUpdateModelPopup').modal('hide');
@@ -618,14 +621,14 @@
             success: function (result) {
                 //populate table with new record
 
-                Swal.fire({
-                    title: 'Successful!',
-                    text: 'Your comment has been added',
-                    icon: 'success',
-                    confirmButtonText: 'Cool',
-                    customClass: 'swal-wide',
-                    timer: 3000,
-                })
+                //Swal.fire({
+                //    title: 'Successful!',
+                //    text: 'Your comment has been added',
+                //    icon: 'success',
+                //    confirmButtonText: 'Cool',
+                //    customClass: 'swal-wide',
+                //    timer: 3000,
+                //})
                 /*window.setTimeout(function () { location.reload() }, 1500)*/
                 $('#AddUpdateModelPopup').modal('hide');
             },
@@ -659,14 +662,14 @@
             success: function (result) {
                 //populate table with new record
 
-                Swal.fire({
-                    title: 'Successful!',
-                    text: 'Your comment has been added',
-                    icon: 'success',
-                    confirmButtonText: 'Cool',
-                    customClass: 'swal-wide',
-                    timer: 3000,
-                })
+                ////Swal.fire({
+                ////    title: 'Successful!',
+                ////    text: 'Your comment has been added',
+                ////    icon: 'success',
+                ////    confirmButtonText: 'Cool',
+                ////    customClass: 'swal-wide',
+                ////    timer: 3000,
+                ////})
                /* window.setTimeout(function () { location.reload() }, 1500)*/
                 $('#AddUpdateModelPopup').modal('hide');
             },
@@ -740,14 +743,14 @@
             dataType: "json",
             success: function (result) {
 
-                Swal.fire({
-                    title: 'Successful!',
-                    text: 'Your Data has been updated',
-                    icon: 'success',
-                    confirmButtonText: 'Cool',
-                    customClass: 'swal-wide',
-                    timer: 3000,
-                })
+                ////Swal.fire({
+                ////    title: 'Successful!',
+                ////    text: 'Your Data has been updated',
+                ////    icon: 'success',
+                ////    confirmButtonText: 'Cool',
+                ////    customClass: 'swal-wide',
+                ////    timer: 3000,
+                ////})
                 /*window.setTimeout(function () { location.reload() }, 1500)*/
                 //BindteacherData();
                 $('#AddUpdateModelPopup').modal('hide');
@@ -785,14 +788,14 @@
             success: function (result) {
 
 
-                Swal.fire({
-                    title: 'Successful!',
-                    text: 'Your Data has been updated',
-                    icon: 'success',
-                    confirmButtonText: 'Cool',
-                    customClass: 'swal-wide',
-                    timer: 3000,
-                })
+                //Swal.fire({
+                //    title: 'Successful!',
+                //    text: 'Your Data has been updated',
+                //    icon: 'success',
+                //    confirmButtonText: 'Cool',
+                //    customClass: 'swal-wide',
+                //    timer: 3000,
+                //})
                 /*window.setTimeout(function () { location.reload() }, 1500)*/
                 $('#AddUpdateModelPopup').modal('hide');
             },
@@ -828,14 +831,14 @@
             success: function (result) {
 
 
-                Swal.fire({
-                    title: 'Successful!',
-                    text: 'Your Data has been updated',
-                    icon: 'success',
-                    confirmButtonText: 'Cool',
-                    customClass: 'swal-wide',
-                    timer: 3000,
-                })
+                //Swal.fire({
+                //    title: 'Successful!',
+                //    text: 'Your Data has been updated',
+                //    icon: 'success',
+                //    confirmButtonText: 'Cool',
+                //    customClass: 'swal-wide',
+                //    timer: 3000,
+                //})
                /* window.setTimeout(function () { location.reload() }, 1500)*/
                 $('#AddUpdateModelPopup').modal('hide');
             },
@@ -855,14 +858,14 @@
                 dataType: "json",
                 success: function (result) {
 
-                    Swal.fire({
-                        title: 'Successful!',
-                        text: 'Your Data has been deleted',
-                        icon: 'success',
-                        confirmButtonText: 'Cool',
-                        customClass: 'swal-wide',
-                        timer: 3000,
-                    })
+                    //Swal.fire({
+                    //    title: 'Successful!',
+                    //    text: 'Your Data has been deleted',
+                    //    icon: 'success',
+                    //    confirmButtonText: 'Cool',
+                    //    customClass: 'swal-wide',
+                    //    timer: 3000,
+                    //})
                     /*window.setTimeout(function () { location.reload() }, 1500)*/
                 },
                 error: function (errormessage) {
@@ -882,14 +885,14 @@
                 dataType: "json",
                 success: function (result) {
 
-                    Swal.fire({
-                        title: 'Successful!',
-                        text: 'Your Data has been deleted',
-                        icon: 'success',
-                        confirmButtonText: 'Cool',
-                        customClass: 'swal-wide',
-                        timer: 3000,
-                    })
+                    //Swal.fire({
+                    //    title: 'Successful!',
+                    //    text: 'Your Data has been deleted',
+                    //    icon: 'success',
+                    //    confirmButtonText: 'Cool',
+                    //    customClass: 'swal-wide',
+                    //    timer: 3000,
+                    //})
                     /*window.setTimeout(function () { location.reload() }, 1500)*/
                 },
                 error: function (errormessage) {

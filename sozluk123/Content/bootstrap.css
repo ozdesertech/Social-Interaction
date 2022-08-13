@@ -5654,7 +5654,7 @@ body.modal-open,
   bottom: 0;
   left: 0;
   z-index: 1030;
-  background-color: #000000;
+ 
 }
 
 .modal-backdrop.fade {
