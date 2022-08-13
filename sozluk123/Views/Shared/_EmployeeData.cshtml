@@ -13,13 +13,37 @@
 <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
 
 <style>
+    
     .btn-default {
         background-color: transparent;
     }
 
 
+
+    .body-content {
+        
+       scroll-behavior:auto;
+        top:0;
+        height: 850px;
+        z-index:1;
+       
+
+    
+    }
+    .body-content::-webkit-scrollbar {
+        display: none; /* for Chrome, Safari, and Opera */
+    }
+        
 </style>
-<script> $('.modal-backdrop').remove(); </script>
+<script> 
+        $('.modal-backdrop').remove();
+        $('body').removeClass("modal-open");
+    </script>
+
+<script type="text/javascript">
+
+</script>
+
 @{ ViewBag.title = "HELLO INDEX"; }
 
 <br />
@@ -31,7 +55,7 @@
 
 
 
-<div class="body-content">
+<div id="btn1234"  class="body-content">
     <div class="row">
 
         <div id="col213" class="column" style="background-color: white;">
@@ -39,7 +63,7 @@
 
                 @foreach (var item in Model.entries1)
                 {
-
+                    
 
 
     <table id="pro1" class="center">
@@ -79,12 +103,12 @@
             {
 <td>
     <div class="btn-group" role="group" aria-label="Basic example">
-        <button id="btn66" class="btn btn-primary my-custom-class" data-toggle="modal" data-target="#myModal" onclick="return likecheck('+ @item.ID  +')"><i class="fa fa-thumbs-o-up"></i></button>
+        <button id="btn66"  class="btn btn-primary my-custom-class" data-toggle="modal" data-target="#myModal" onclick="return likecheck('+ @item.ID  +')"><i class="fa fa-thumbs-o-up"></i></button>
         @*@Html.ActionLink("+Add Comment", "setvalue", "entries", new { id = item.ID }, new { @class = "btn btn-primary ", onclick = "OpenAddPopup12345();", alt = "@item.ID" })*@
 
         @*@Ajax.RawActionLink(string.Format("<i class='fa fa-thumbs-o-up'></i>"), "Like1", "entries", new { id = item.ID }, new AjaxOptions { HttpMethod = "GET", UpdateTargetId = @item.ID.ToString() }, new { @class = "btn btn-primary my-custom-class" })*@
         @*@Ajax.ActionLink("Like", "Like1", "entries", new { id = item.ID }, new AjaxOptions { HttpMethod = "GET", UpdateTargetId = @item.ID.ToString() }, new { @class = "btn btn-primary  my-custom-class" })*@
-        <button id="btn1" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="return OpenAddPopupComment('+ @item.ID  +')"><i class="fa fa-comment"></i></button>
+        <button id="btn1"  class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="return OpenAddPopupComment('+ @item.ID  +')"><i class="fa fa-comment"></i></button>
 
 
         @foreach (var item4211 in Model.yazars1)
@@ -661,15 +685,15 @@
             dataType: "json",
             success: function (result) {
                 //populate table with new record
-
-                ////Swal.fire({
-                ////    title: 'Successful!',
-                ////    text: 'Your comment has been added',
-                ////    icon: 'success',
-                ////    confirmButtonText: 'Cool',
-                ////    customClass: 'swal-wide',
-                ////    timer: 3000,
-                ////})
+               
+                //Swal.fire({
+                //    title: 'Successful!',
+                //    text: 'Your comment has been added',
+                //    icon: 'success',
+                //    confirmButtonText: 'Cool',
+                //    customClass: 'swal-wide',
+                //    timer: 3000,
+                //})
                /* window.setTimeout(function () { location.reload() }, 1500)*/
                 $('#AddUpdateModelPopup').modal('hide');
             },
