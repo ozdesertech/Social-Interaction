@@ -13,6 +13,7 @@ namespace sozluk123.Models
         public static void BroadcastData()
         {
             IHubContext context = GlobalHost.ConnectionManager.GetHubContext<EntriesHub>();
+            
             context.Clients.All.refreshEmployeeData();
         }
     }

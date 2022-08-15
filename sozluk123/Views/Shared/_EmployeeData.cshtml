@@ -13,7 +13,7 @@
 <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
 
 <style>
-    
+
     .btn-default {
         background-color: transparent;
     }
@@ -21,28 +21,55 @@
 
 
     .body-content {
-        
-       scroll-behavior:auto;
-        top:0;
+        scroll-behavior: auto;
+        top: 0;
         height: 850px;
-        z-index:1;
-       
+        z-index: 1;
+    }
 
-    
-    }
-    .body-content::-webkit-scrollbar {
-        display: none; /* for Chrome, Safari, and Opera */
-    }
-        
+        .body-content::-webkit-scrollbar {
+            display: none; /* for Chrome, Safari, and Opera */
+        }
 </style>
-<script> 
-        $('.modal-backdrop').remove();
-        $('body').removeClass("modal-open");
-    </script>
-
-<script type="text/javascript">
-
+<script>
+    $('.modal-backdrop').remove();
+    $('body').removeClass("modal-open");
 </script>
+
+@*<script type="text/javascript">
+    var hubNotify = $.connection.entriesHub;
+
+
+    $.connection.hub.start().done(function () {
+        getAll();
+    });
+    hubNotify.client.refreshEmployeeData = function () {
+
+        getAll();
+    };
+</script>*@
+
+@*<script type="text/javascript">
+   
+    /*if ($('#AddUpdateModelPopup').is(':visible')) {*/
+    var hubNotify = $.connection.entriesHub;
+    setInterval(function () {
+
+        if ($('#AddUpdateModelPopup').is(':visible')) {
+            $.connection.hub.stop();
+            console.log($.connection.hub.stop());
+            console.log("opened");
+        }
+                else {
+                    console.log("closed");
+                }
+            }, 3000);
+
+
+
+
+</script>*@
+
 
 @{ ViewBag.title = "HELLO INDEX"; }
 
@@ -55,7 +82,7 @@
 
 
 
-<div id="btn1234"  class="body-content">
+<div id="btn1234" class="body-content">
     <div class="row">
 
         <div id="col213" class="column" style="background-color: white;">
@@ -63,7 +90,7 @@
 
                 @foreach (var item in Model.entries1)
                 {
-                    
+
 
 
     <table id="pro1" class="center">
@@ -103,12 +130,12 @@
             {
 <td>
     <div class="btn-group" role="group" aria-label="Basic example">
-        <button id="btn66"  class="btn btn-primary my-custom-class" data-toggle="modal" data-target="#myModal" onclick="return likecheck('+ @item.ID  +')"><i class="fa fa-thumbs-o-up"></i></button>
+        <button id="btn66" class="btn btn-primary my-custom-class" data-toggle="modal" data-target="#myModal" onclick="return likecheck('+ @item.ID  +')"><i class="fa fa-thumbs-o-up"></i></button>
         @*@Html.ActionLink("+Add Comment", "setvalue", "entries", new { id = item.ID }, new { @class = "btn btn-primary ", onclick = "OpenAddPopup12345();", alt = "@item.ID" })*@
 
         @*@Ajax.RawActionLink(string.Format("<i class='fa fa-thumbs-o-up'></i>"), "Like1", "entries", new { id = item.ID }, new AjaxOptions { HttpMethod = "GET", UpdateTargetId = @item.ID.ToString() }, new { @class = "btn btn-primary my-custom-class" })*@
         @*@Ajax.ActionLink("Like", "Like1", "entries", new { id = item.ID }, new AjaxOptions { HttpMethod = "GET", UpdateTargetId = @item.ID.ToString() }, new { @class = "btn btn-primary  my-custom-class" })*@
-        <button id="btn1"  class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="return OpenAddPopupComment('+ @item.ID  +')"><i class="fa fa-comment"></i></button>
+        <button id="btn1" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="return OpenAddPopupComment('+ @item.ID  +')"><i class="fa fa-comment"></i></button>
 
 
         @foreach (var item4211 in Model.yazars1)
@@ -122,14 +149,14 @@
                     if (item4211.ID == item.yazar_id)
                     {
 
-    <button id="btn3" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="OpenUpdatePopup1('+ @item.ID  +')"> <i class="fa fa-edit"></i> </button>
-                                        <button id="btn4" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="DeleteTeacher('+ @item.ID +')"><i class="fa fa-trash"></i></button>}
-                                }
-
+<button id="btn3" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="OpenUpdatePopup1('+ @item.ID  +')"> <i class="fa fa-edit"></i> </button>
+                                    <button id="btn4" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="DeleteTeacher('+ @item.ID +')"><i class="fa fa-trash"></i></button>}
                             }
 
-
                         }
+
+
+                    }
 
     </div>
 
@@ -281,31 +308,24 @@
 
 <script type="text/javascript">
     localStorage.removeItem('first_time2');
-</script>}
+</script> } @*<script type="text/javascript">
 
+                    var myArray = [];
 
-@*<script type="text/javascript">
+                    @foreach (var d in Model.entries1)
+                    {
+                        @:myArray.push("@d.ID.ToString()");
+                    }
 
-    var myArray = [];
+                    $(document).ready(function () {
+                        setInterval(function () {
+                            $.each(myArray, function (index, value) {
+                                $('#' + value).load(location.href + " #"+value);
+                            });
+                                }, 1000);
+                    });
 
-    @foreach (var d in Model.entries1)
-    {
-        @:myArray.push("@d.ID.ToString()");
-    }
-
-    $(document).ready(function () {
-        setInterval(function () {
-            $.each(myArray, function (index, value) {
-                $('#' + value).load(location.href + " #"+value);
-            });
-                }, 1000);
-    });
-
-</script>*@
-
-
-
-@*<script type="text/javascript">
+                </script>*@ @*<script type="text/javascript">
         function loaddata() {
             $('#col213 div:not(.btn-group") ').load(location.href + " #col213 div:not()")
         }
@@ -314,9 +334,7 @@
             loaddata()
 
         }, 5000);
-    </script>*@
-
-@*<script src="~/Scripts/jquery-2.1.4.min.js"></script>*@
+    </script>*@ @*<script src="~/Scripts/jquery-2.1.4.min.js"></script>*@
 <script src='/signalr/js'></script>
 <script type="text/javascript">
 
@@ -367,11 +385,11 @@
     //    getAll();
     //};
 
-   
-   
 
 
-   
+
+
+
 
     $('.my-custom-class').on('click', function () {
         icon = $(this).find("i")
@@ -611,7 +629,7 @@
                 ////    customClass: 'swal-wide',
                 ////    timer: 3000,
                 ////})
-               /* window.setTimeout(function () { location.reload() }, 1500)*/
+                /* window.setTimeout(function () { location.reload() }, 1500)*/
 
                 $('#AddUpdateModelPopup').modal('hide');
             },
@@ -685,7 +703,7 @@
             dataType: "json",
             success: function (result) {
                 //populate table with new record
-               
+
                 //Swal.fire({
                 //    title: 'Successful!',
                 //    text: 'Your comment has been added',
@@ -694,7 +712,7 @@
                 //    customClass: 'swal-wide',
                 //    timer: 3000,
                 //})
-               /* window.setTimeout(function () { location.reload() }, 1500)*/
+                /* window.setTimeout(function () { location.reload() }, 1500)*/
                 $('#AddUpdateModelPopup').modal('hide');
             },
             error: function (errormessage) {
@@ -863,7 +881,7 @@
                 //    customClass: 'swal-wide',
                 //    timer: 3000,
                 //})
-               /* window.setTimeout(function () { location.reload() }, 1500)*/
+                /* window.setTimeout(function () { location.reload() }, 1500)*/
                 $('#AddUpdateModelPopup').modal('hide');
             },
             error: function (errormessage) {
