@@ -31,23 +31,30 @@
     });
 
     hubNotify.client.refreshEmployeeData = function () {
+        gethtmldata();
+        if ($('#AddUpdateModelPopup').is(':visible')) {
+            console.log("trx");
+        }
+        else {
 
+            getAll();
+        }
        
-
+    };
     
    
 
-    setInterval(function () {
-        if ($('#AddUpdateModelPopup').is(':visible')) {
+    //setInterval(function () {
+    //    if ($('#AddUpdateModelPopup').is(':visible')) {
             
-        }
-        else {
+    //    }
+    //    else {
            
-            getAll();
-        }
-        gethtmldata();
-    }, 1500);
-    };
+    //        getAll();
+    //    }
+    //    gethtmldata();
+    //}, 300);
+   
     
 
     function getAll() {
