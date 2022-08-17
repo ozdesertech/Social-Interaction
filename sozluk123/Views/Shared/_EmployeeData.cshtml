@@ -9,14 +9,18 @@
 
 <link href="~/Content/general.css" rel="stylesheet" />
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
-<script src="~/Scripts/linq.min.js"></script>
 <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
-
+<script src="~/Scripts/jquery-3.4.0.min.js"></script>
+<script src="~/Scripts/jquery.signalR-2.4.3.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
 
     .btn-default {
         background-color: transparent;
     }
+
 
 
 
@@ -31,44 +35,12 @@
             display: none; /* for Chrome, Safari, and Opera */
         }
 </style>
-<script>
+<script type="text/javascript">
     $('.modal-backdrop').remove();
     $('body').removeClass("modal-open");
 </script>
 
-@*<script type="text/javascript">
-    var hubNotify = $.connection.entriesHub;
 
-
-    $.connection.hub.start().done(function () {
-        getAll();
-    });
-    hubNotify.client.refreshEmployeeData = function () {
-
-        getAll();
-    };
-</script>*@
-
-@*<script type="text/javascript">
-   
-    /*if ($('#AddUpdateModelPopup').is(':visible')) {*/
-    var hubNotify = $.connection.entriesHub;
-    setInterval(function () {
-
-        if ($('#AddUpdateModelPopup').is(':visible')) {
-            $.connection.hub.stop();
-            console.log($.connection.hub.stop());
-            console.log("opened");
-        }
-                else {
-                    console.log("closed");
-                }
-            }, 3000);
-
-
-
-
-</script>*@
 
 
 @{ ViewBag.title = "HELLO INDEX"; }
@@ -130,7 +102,7 @@
             {
 <td>
     <div class="btn-group" role="group" aria-label="Basic example">
-        <button id="btn66" class="btn btn-primary my-custom-class" data-toggle="modal" data-target="#myModal" onclick="return likecheck('+ @item.ID  +')"><i class="fa fa-thumbs-o-up"></i></button>
+        <button  id="btn66" class="btn btn-primary my-custom-class" data-toggle="modal" data-target="#myModal" onclick="return likecheck('+ @item.ID  +')"><i class="fa fa-thumbs-o-up"></i></button>
         @*@Html.ActionLink("+Add Comment", "setvalue", "entries", new { id = item.ID }, new { @class = "btn btn-primary ", onclick = "OpenAddPopup12345();", alt = "@item.ID" })*@
 
         @*@Ajax.RawActionLink(string.Format("<i class='fa fa-thumbs-o-up'></i>"), "Like1", "entries", new { id = item.ID }, new AjaxOptions { HttpMethod = "GET", UpdateTargetId = @item.ID.ToString() }, new { @class = "btn btn-primary my-custom-class" })*@
@@ -160,8 +132,7 @@
 
     </div>
 
-</td>
-}
+</td>}
 
         </tr>
 
@@ -170,8 +141,8 @@
                 <br>
                 <div class="accordion" id="col2">
                     <div>
-                        <input type="checkbox" id="@item.ID.GetHashCode()" class="accordion__input">
-                        <label for="@item.ID.GetHashCode()" class="accordion__label">@{Html.RenderAction("CountRecords", "entries", new { id1 = item.ID });} Comments </label>
+
+                        <label onclick="return listloaddata('+ @item.ID  +')" for="@item.ID.GetHashCode()" class="accordion__label">@{Html.RenderAction("CountRecords", "entries", new { id1 = item.ID });} Comments </label>
                         <div class="accordion__content">
                             <div style="background-color:white;">
                                 <div style="text-align:center">
@@ -247,33 +218,12 @@
 </div>
 
 <div id="dataModel1"></div>
-<script src="~/Scripts/jquery-3.4.0.min.js"></script>
-<script src="~/Scripts/jquery.signalR-2.4.3.min.js"></script>
-<script src="~/Scripts/bootstrap.min.js"></script>
 
 
 
 
 
 
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-
-<script type="text/javascript">
-
-
-
-
-
-
-
-</script>
-
-
-<script type="text/javascript">
-
-</script>
 
 @if (isLoggedIn)
 {
@@ -302,30 +252,34 @@
 
 
         //localStorage.clear();
-</script> }
-            else if (isLoggedIn == false)
-            {
+</script>
+ }
+else if (isLoggedIn == false)
+{
 
 <script type="text/javascript">
     localStorage.removeItem('first_time2');
-</script> } @*<script type="text/javascript">
+</script>
+ }
 
-                    var myArray = [];
+@*<script type="text/javascript">
 
-                    @foreach (var d in Model.entries1)
-                    {
-                        @:myArray.push("@d.ID.ToString()");
-                    }
+        var myArray = [];
 
-                    $(document).ready(function () {
-                        setInterval(function () {
-                            $.each(myArray, function (index, value) {
-                                $('#' + value).load(location.href + " #"+value);
-                            });
-                                }, 1000);
-                    });
+        @foreach (var d in Model.entries1)
+        {
+            @:myArray.push("@d.ID.ToString()");
+        }
 
-                </script>*@ @*<script type="text/javascript">
+        $(document).ready(function () {
+            setInterval(function () {
+                $.each(myArray, function (index, value) {
+                    $('#' + value).load(location.href + " #"+value);
+                });
+                    }, 1000);
+        });
+
+    </script>*@ @*<script type="text/javascript">
         function loaddata() {
             $('#col213 div:not(.btn-group") ').load(location.href + " #col213 div:not()")
         }
@@ -335,61 +289,8 @@
 
         }, 5000);
     </script>*@ @*<script src="~/Scripts/jquery-2.1.4.min.js"></script>*@
-<script src='/signalr/js'></script>
+
 <script type="text/javascript">
-
-    //console.log("test");
-    //var hubNotify = $.connection.entriesHub;
-    //console.log(hubNotify);
-
-    //$.connection.hub.start().done(function () {
-    //    getAll();
-    //});
-    //hubNotify.client.refreshEmployeeData = function () {
-    //    getAll();
-    //};
-
-
-
-
-
-
-
-
-
-
-    //$(function () {
-
-
-
-
-    //    var hubNotify = $.connection.entriesHub;
-    //    console.log(hubNotify);
-    //});
-    //    $.connection.hub.start().done(function () {
-    //        getAll();
-    //    });
-
-    //    hubNotify.client.refreshEmployeeData = function () {
-    //        getAll();
-    //    };
-    //});
-
-
-
-    //$.connection.hub.start().done(function () {
-    //    getAll();
-    //});
-
-    //hubNotify.client.refreshEmployeeData = function () {
-    //    getAll();
-    //};
-
-
-
-
-
-
 
     $('.my-custom-class').on('click', function () {
         icon = $(this).find("i")
@@ -401,12 +302,6 @@
 
 
     });
-
-
-
-
-
-
 
     $("#txtsearch").on("keyup", function () {
         var txtenter = $(this).val();
@@ -429,31 +324,19 @@
     })
 
 
-    //function getAll() {
-
-    //    $.ajax({
-    //        url: '/entries/GetEmployeeData',
-    //        contentType: 'application/html ; charset:utf-8',
-    //        type: 'GET',
-    //        dataType: 'html',
-    //        success: function (result) {
-    //            $('#dataModel').empty();
-    //            $('#dataModel').html(result);
-
-    //        }
-    //    });
-    //}
+ 
 
 
     function likecheck(Id123) {
-        var model = $('#dataModel1');
+        /*var model = $('#dataModel1');*/
         $.ajax({
+            
             url: '/entries/Like1?id=' + Id123,
 
-            type: "POST",
+            type: "GET",
             contentType: "application/json;charset=utf-8",
             dataType: "json",
-            success: function (result) { model.empty().append(result); }
+           /* success: function (result) { model.empty().append(result); }*/
         });
     }
 
@@ -461,6 +344,7 @@
 
     function listloaddata(Id123) {
         $.ajax({
+           
             url: '/entries/listingloaddata?TeacherId=' + Id123,
             contentType: 'application/html; charset=utf-8',
             type: 'GET',
@@ -480,6 +364,7 @@
     function OpenAddPopup12345() {
 
         $.ajax({
+            
             url: '/entries/LoadaddTeacherPopup12345',
             contentType: 'application/html; charset=utf-8',
             type: 'GET',
@@ -499,6 +384,7 @@
     function OpenAddPopupComment(id1) {
 
         $.ajax({
+           
             url: '/entries/LoadaddTeacherPopupComment1?TeacherId=' + id1,
             contentType: 'application/html; charset=utf-8',
             type: 'GET',
@@ -519,6 +405,7 @@
     function OpenAddPopup1234() {
 
         $.ajax({
+           
             url: '/entries/LoadaddTeacherPopup1234',
             contentType: 'application/html; charset=utf-8',
             type: 'GET',
@@ -539,6 +426,7 @@
     function OpenAddPopup() {
 
         $.ajax({
+           
             url: '/entries/LoadaddTeacherPopup1',
             contentType: 'application/html; charset=utf-8',
             type: 'GET',
@@ -571,6 +459,7 @@
             is_active: $('#is_active').val(),
         };
         $.ajax({
+            
             url: "/entries/AddComment",
             data: JSON.stringify(TeacherObj),
             type: "POST",
@@ -614,6 +503,7 @@
             active: $('#active').val(),
         };
         $.ajax({
+           
             url: "/entries/AddTeacher1",
             data: JSON.stringify(TeacherObj),
             type: "POST",
@@ -655,6 +545,7 @@
             active: $('#active').val(),
         };
         $.ajax({
+            
             url: "/entries/AddTeacher1234",
             data: JSON.stringify(TeacherObj),
             type: "POST",
@@ -696,6 +587,7 @@
             active: $('#active').val(),
         };
         $.ajax({
+           
             url: "/entries/AddTeacherComment",
             data: JSON.stringify(TeacherObj),
             type: "POST",
@@ -723,6 +615,7 @@
 
     function OpenUpdatePopup1(Id123) {
         $.ajax({
+            
             url: '/entries/LoadEditTeacherPopup?TeacherId=' + Id123,
             contentType: 'application/html; charset=utf-8',
             type: 'GET',
@@ -742,6 +635,7 @@
 
     function OpenUpdatePopup15(Id123) {
         $.ajax({
+           
             url: '/entries/LoadEditTeacherPopup15?TeacherId=' + Id123,
             contentType: 'application/html; charset=utf-8',
             type: 'GET',
@@ -778,6 +672,7 @@
         //    return false;
         //}
         $.ajax({
+           
             url: "/entries/Updateauthordetails",
             data: JSON.stringify(TeacherObj),
             type: "POST",
@@ -822,6 +717,7 @@
         //    return false;
         //}
         $.ajax({
+           
             url: "/entries/UpdateTeacher",
             data: JSON.stringify(TeacherObj),
             type: "POST",
@@ -865,6 +761,7 @@
         //    return false;
         //}
         $.ajax({
+           
             url: "/entries/UpdateTeacher151",
             data: JSON.stringify(TeacherObj),
             type: "POST",
@@ -894,6 +791,7 @@
         var ans = confirm("Are you sure you want to delete?");
         if (ans) {
             $.ajax({
+               
                 url: "/entries/DeleteTeacher?TeacherId=" + ID,
                 type: "POST",
                 contentType: "application/json;charset=UTF-8",
@@ -921,6 +819,7 @@
         var ans = confirm("Are you sure you want to delete?");
         if (ans) {
             $.ajax({
+               
                 url: "/entries/DeleteTeacher15?TeacherId=" + ID,
                 type: "POST",
                 contentType: "application/json;charset=UTF-8",

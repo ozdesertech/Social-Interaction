@@ -123,8 +123,15 @@
 
 
     </div>
-    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script type="text/javascript">
+        $(document).on('click', function () {
+            $('.collapse').collapse('hide');
+        })
+
+    </script>
+
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")

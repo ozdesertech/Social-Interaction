@@ -28,13 +28,9 @@ namespace sozluk123.Controllers
 
         public static Guid entryid1;
 
-       
-
         
     }
 
-
-    
 
     public class entriesController : Controller
     {
@@ -320,15 +316,17 @@ namespace sozluk123.Controllers
 
         public ActionResult GetEmployeeData()
         {
-            var mts1 = new lstentries1();
-            // mts.entries1 = db.entry.ToList();
-            mts1.yazars1 = db.yazar.ToList();
-            mts1.baslik1 = db.baslik.ToList();
-            mts1.entries1 = db.entry.OrderByDescending(abc => abc.kayit_tarih).ToList();
-            //mts.entry1yazar1 = db.entry_yazar.ToList();
-            mts1.entry1yazar1 = db.entry_yazar.OrderByDescending(abc => abc.kayit_tarih).ToList();
+          
+                var mts1 = new lstentries1();
+                // mts.entries1 = db.entry.ToList();
+                mts1.yazars1 = db.yazar.ToList();
+                mts1.baslik1 = db.baslik.ToList();
+                mts1.entries1 = db.entry.OrderByDescending(abc => abc.kayit_tarih).ToList();
+                //mts.entry1yazar1 = db.entry_yazar.ToList();
+                mts1.entry1yazar1 = db.entry_yazar.OrderByDescending(abc => abc.kayit_tarih).ToList();
+                return PartialView("_EmployeeData", mts1);
            
-            return PartialView("_EmployeeData",mts1);
+           
         }
 
 
@@ -477,7 +475,7 @@ namespace sozluk123.Controllers
             db.SaveChanges();
             EntriesHub.BroadcastData();
             return Json(ent, JsonRequestBehavior.AllowGet);
-
+            
 
 
 
