@@ -38,11 +38,12 @@
                 }
                 else {
                     console.log("closed");
-                    /*getAll1();*/
+                    $('#dataModel').empty().append(result);
+                   
                 }
 
            
-                $('#dataModel').empty().append(result);
+                
             },
             error: function (xhr, status) {
                 alert(status);
@@ -107,32 +108,8 @@
 
 
     hubNotify.client.refreshEmployeeData = function () {
-        $.ajax({
 
-            url: '/entries/GetEmployeeData',
-            async: true,
-            contentType: 'application/html ; charset:utf-8',
-            type: 'GET',
-
-
-            dataType: 'html',
-            success: function (result) {
-                if ($('#AddUpdateModelPopup').is(':visible')) {
-                    console.log("opened");
-
-                }
-                else {
-                    console.log("closed");
-                    $('#dataModel').empty().append(result);
-                }
-
-
-                
-            },
-            error: function (xhr, status) {
-                alert(status);
-            }
-        });
+        getAll1();
     
     };
 
