@@ -9,7 +9,7 @@
  *
  */
 
-/// <reference path="jquery-3.4.0.js" />
+/// <reference path="jquery-3.4.1.js" />
 /// 
 (function ($, window, undefined) {
 

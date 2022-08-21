@@ -22,21 +22,3 @@ select,
 textarea {
     max-width: 280px;
 }
-
-ul.nav.nav-tabs {
-    margin:10px 0px;
-}
-
-ul.nav.nav-tabs li:not(.active) a {
-    background-color:aquamarine;
-    color:blue;
-}
-
-ul.nav.nav-tabs li:not(.active) a {
-        border-top: 3px solid aquamarine;
-
-    }
-
-
-
-

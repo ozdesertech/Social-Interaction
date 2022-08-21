@@ -10,40 +10,27 @@
 <link href="~/Content/general.css" rel="stylesheet" />
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
-<script src="~/Scripts/jquery-3.4.0.min.js"></script>
 <script src="~/Scripts/jquery.signalR-2.4.3.min.js"></script>
 <script src="~/Scripts/bootstrap.min.js"></script>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
-
     .btn-default {
         background-color: transparent;
     }
-
-
-
-
     .body-content {
         scroll-behavior: auto;
         top: 0;
         height: 850px;
         z-index: 1;
     }
-
         .body-content::-webkit-scrollbar {
-            display: none; /* for Chrome, Safari, and Opera */
+            display: none; 
         }
 </style>
+
 <script type="text/javascript">
     $('.modal-backdrop').remove();
-    $('body').removeClass("modal-open");
+    /*$('body').removeClass("modal-open");*/
 </script>
-
-
-
-
-@{ ViewBag.title = "HELLO INDEX"; }
 
 <br />
 <div class="col-md-6" style="float:none;margin:auto;">
@@ -51,164 +38,130 @@
 </div>
 <hr>
 
-
-
-
 <div id="btn1234" class="body-content">
     <div class="row">
-
         <div id="col213" class="column" style="background-color: white;">
             <div style="text-align:center">
-
                 @foreach (var item in Model.entries1)
                 {
 
 
 
-    <table id="pro1" class="center">
+                <table id="pro1" class="center">
 
-        <tr>
-            <td><p><b>@item.entry_ismi</b></p></td>
-        </tr>
-        <tr>
-            <td><p>@item.entry_icerik </p></td>
-        </tr>
-        <tr>
-            <td><p>username: <i>@item.yazar.yazar_ismi</i></p></td>
-        </tr>
-        <tr>
-            <td><p><i>@item.kayit_tarih</i></p></td>
-        </tr>
+                    <tr>
+                        <td><p><b>@item.entry_ismi</b></p></td>
+                    </tr>
+                    <tr>
+                        <td><p>@item.entry_icerik </p></td>
+                    </tr>
+                    <tr>
+                        <td><p>username: <i>@item.yazar.yazar_ismi</i></p></td>
+                    </tr>
+                    <tr>
+                        <td><p><i>@item.kayit_tarih</i></p></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div id="tres1">
 
+                                <p id="@item.ID.ToString()">
 
+                                    @item.post_like Likes
 
-
-        <tr>
-            <td>
-                <div id="tres1">
-
-                    <p id="@item.ID.ToString()">
-
-                        @item.post_like Likes
-
-                    </p>
-                </div>
-            </td>
-        </tr>
-
-        <tr>
-
-            @if (isLoggedIn)
-            {
-<td>
-    <div class="btn-group" role="group" aria-label="Basic example">
-        <button  id="btn66" class="btn btn-primary my-custom-class" data-toggle="modal" data-target="#myModal" onclick="return likecheck('+ @item.ID  +')"><i class="fa fa-thumbs-o-up"></i></button>
-        @*@Html.ActionLink("+Add Comment", "setvalue", "entries", new { id = item.ID }, new { @class = "btn btn-primary ", onclick = "OpenAddPopup12345();", alt = "@item.ID" })*@
-
-        @*@Ajax.RawActionLink(string.Format("<i class='fa fa-thumbs-o-up'></i>"), "Like1", "entries", new { id = item.ID }, new AjaxOptions { HttpMethod = "GET", UpdateTargetId = @item.ID.ToString() }, new { @class = "btn btn-primary my-custom-class" })*@
-        @*@Ajax.ActionLink("Like", "Like1", "entries", new { id = item.ID }, new AjaxOptions { HttpMethod = "GET", UpdateTargetId = @item.ID.ToString() }, new { @class = "btn btn-primary  my-custom-class" })*@
-        <button id="btn1" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="return OpenAddPopupComment('+ @item.ID  +')"><i class="fa fa-comment"></i></button>
-
-
-        @foreach (var item4211 in Model.yazars1)
-        {
-            if (isLoggedIn)
-            {
-
-
-                if (item4211.yazar_ismi.Contains(User.Identity.Name))
-                {
-                    if (item4211.ID == item.yazar_id)
-                    {
-
-<button id="btn3" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="OpenUpdatePopup1('+ @item.ID  +')"> <i class="fa fa-edit"></i> </button>
-                                    <button id="btn4" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="DeleteTeacher('+ @item.ID +')"><i class="fa fa-trash"></i></button>}
-                            }
-
-                        }
-
-
-                    }
-
-    </div>
-
-</td>}
-
-        </tr>
-
-        <tr>
-            <td>
-                <br>
-                <div class="accordion" id="col2">
-                    <div>
-
-                        <label onclick="return listloaddata('+ @item.ID  +')" for="@item.ID.GetHashCode()" class="accordion__label">@{Html.RenderAction("CountRecords", "entries", new { id1 = item.ID });} Comments </label>
-                        <div class="accordion__content">
-                            <div style="background-color:white;">
-                                <div style="text-align:center">
-                                    @if (item.is_comment == false)
-                                    {
-                    <i>No Comments</i>}
-
-
-                                    @foreach (var item123 in Model.entry1yazar1.GroupBy(x => x.entry_ID).Select(x => x.FirstOrDefault()))
-                                    {
-
-
-
-                                        if (item.ID == item123.entry_ID)
-                                        {
-
-
-                    <p><b>@item123.comment</b></p>
-                                            <p style="text-align:center">username: <i>@item123.yazar.yazar_ismi</i></p>
-                                                                    <p style="text-align:center"><i>@item123.kayit_tarih</i></p> foreach (var item421 in Model.yazars1)
-                                                                    {
-                                                                        if (isLoggedIn)
-                                                                        {
-                                                                            if (item421.yazar_ismi.Contains(User.Identity.Name))
-                                                                            {
-                                                                                if (item421.ID == item123.yazar_ID)
-                                                                                {
-
-                                            <div class="btn-group" role="group" aria-label="Basic example">
-                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="OpenUpdatePopup15('+ @item123.ID +')"> <i class="fa fa-edit"></i></button>
-                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="DeleteTeacher15('+@item123.ID+')"> <i class="fa fa-trash"></i></button>
-                                            </div> }
-                                    }
-
-                                }
-
-
-                            }
-
-
-    <hr>}
-
-
-
-}
-
-
-                                </div>
+                                </p>
                             </div>
-                            @if (item.is_comment == true)
-                            {
-            <button id="btn3" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="return listloaddata('+ @item.ID  +')">Load More Comments  </button>}
+                        </td>
+                    </tr>
+
+                    @if (isLoggedIn)
+                    {
+                    <tr>
+                        <td>
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <button id="btn66" class="btn btn-primary my-custom-class" data-toggle="modal" data-target="#myModal" onclick="return likecheck('+ @item.ID  +')"><i class="fa fa-thumbs-o-up"></i></button>
+                                @*@Html.ActionLink("+Add Comment", "setvalue", "entries", new { id = item.ID }, new { @class = "btn btn-primary ", onclick = "OpenAddPopup12345();", alt = "@item.ID" })*@
+                                @*@Ajax.RawActionLink(string.Format("<i class='fa fa-thumbs-o-up'></i>"), "Like1", "entries", new { id = item.ID }, new AjaxOptions { HttpMethod = "GET", UpdateTargetId = @item.ID.ToString() }, new { @class = "btn btn-primary my-custom-class" })*@
+                                @*@Ajax.ActionLink("Like", "Like1", "entries", new { id = item.ID }, new AjaxOptions { HttpMethod = "GET", UpdateTargetId = @item.ID.ToString() }, new { @class = "btn btn-primary  my-custom-class" })*@
+                                <button id="btn1" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="return OpenAddPopupComment('+ @item.ID  +')"><i class="fa fa-comment"></i></button>
 
 
+                                @foreach (var item4211 in Model.yazars1)
+                                {
+                                    if (isLoggedIn)
+                                    {
 
+
+                                        if (item4211.yazar_ismi.Contains(User.Identity.Name))
+                                        {
+                                            if (item4211.ID == item.yazar_id)
+                                            {
+
+                                                    <button id="btn3" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="OpenUpdatePopup1('+ @item.ID  +')"> <i class="fa fa-edit"></i> </button>
+                                                    <button id="btn4" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="DeleteTeacher('+ @item.ID +')"><i class="fa fa-trash"></i></button>}
+                                            }
+                                        }
+                                    }
                         </div>
+                    </td>
+                </tr>
+                }
+                                    <tr>
+                                        <td>
+                                            <br>
+                                            <div class="accordion" id="col2">
+                                                <div>
+                                                    <label onclick="return listloaddata('+ @item.ID  +')" for="@item.ID.GetHashCode()" class="accordion__label">@{Html.RenderAction("CountRecords", "entries", new { id1 = item.ID });} Comments </label>
+                                                    <div class="accordion__content">
+                                                        <div style="background-color:white;">
+                                                            <div style="text-align:center">
+                                                                @if (item.is_comment == false)
+                                                                {
+                                                                     <i>No Comments</i>}
 
-                    </div>
-                </div>
-                <hr>
+                                                                @foreach (var item123 in Model.entry1yazar1.GroupBy(x => x.entry_ID).Select(x => x.FirstOrDefault()))
+                                                                {
+                                                                    if (item.ID == item123.entry_ID)
+                                                                    {
+
+                                                                        <p><b>@item123.comment</b></p>
+                                                                        <p style="text-align:center">username: <i>@item123.yazar.yazar_ismi</i></p>
+                                                                        <p style="text-align:center"><i>@item123.kayit_tarih</i></p> foreach (var item421 in Model.yazars1)
+                                                                    {
+                                                                    if (isLoggedIn)
+                                                                    {
+                                                                        if (item421.yazar_ismi.Contains(User.Identity.Name))
+                                                                        {
+                                                                            if (item421.ID == item123.yazar_ID)
+                                                                            {
+
+                                                                                <div class="btn-group" role="group" aria-label="Basic example">
+                                                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="OpenUpdatePopup15('+ @item123.ID +')"> <i class="fa fa-edit"></i></button>
+                                                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="DeleteTeacher15('+@item123.ID+')"> <i class="fa fa-trash"></i></button>
+                                                                                </div> 
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                        <hr>
+                                                    }
+                                                }
 
 
-            </td>
-        </tr>
+                                                </div>
+                                          </div>
 
-    </table>}
+                                                        @if (item.is_comment == true)
+                                                        {
+                                                                <button id="btn3" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="return listloaddata('+ @item.ID  +')">Load More Comments  </button>}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                        </td>
+                                    </tr>
+                           </table>
+                           }
             </div>
         </div>
     </div>
@@ -219,79 +172,7 @@
 
 <div id="dataModel1"></div>
 
-
-
-
-
-
-
-@if (isLoggedIn)
-{
 <script type="text/javascript">
-
-
-        //localStorage.clear();
-        var firstTime = localStorage.getItem("first_time2");
-        if (!firstTime) {
-            localStorage.setItem("first_time2", "1");
-
-
-
-            @*Swal.fire({
-                title: 'Welcome!',
-                text: '@User.Identity.Name',
-                icon: 'success',
-                confirmButtonText: 'Cool',
-                customClass: 'swal-wide',
-                timer: 2000,
-            })*@
-            /*window.setTimeout(function () { location.reload() }, 1500)*/
-            //localStorage.clear();
-        }
-
-
-
-        //localStorage.clear();
-</script>
- }
-else if (isLoggedIn == false)
-{
-
-<script type="text/javascript">
-    localStorage.removeItem('first_time2');
-</script>
- }
-
-@*<script type="text/javascript">
-
-        var myArray = [];
-
-        @foreach (var d in Model.entries1)
-        {
-            @:myArray.push("@d.ID.ToString()");
-        }
-
-        $(document).ready(function () {
-            setInterval(function () {
-                $.each(myArray, function (index, value) {
-                    $('#' + value).load(location.href + " #"+value);
-                });
-                    }, 1000);
-        });
-
-    </script>*@ @*<script type="text/javascript">
-        function loaddata() {
-            $('#col213 div:not(.btn-group") ').load(location.href + " #col213 div:not()")
-        }
-
-        setInterval(function () {
-            loaddata()
-
-        }, 5000);
-    </script>*@ @*<script src="~/Scripts/jquery-2.1.4.min.js"></script>*@
-
-<script type="text/javascript">
-
     $('.my-custom-class').on('click', function () {
         icon = $(this).find("i")
         if (icon.hasClass("fa-thumbs-o-up")) {
@@ -299,23 +180,16 @@ else if (isLoggedIn == false)
         } else {
             icon.addClass("fa-thumbs-o-up").removeClass("fa-thumbs-up");
         }
-
-
     });
 
     $("#txtsearch").on("keyup", function () {
         var txtenter = $(this).val();
         $("table").each(function (results) {
-
             if (results !== -1) {
                 var id = $(this).find("td").text();
-
-
                 if (id.indexOf(txtenter) !== 0 && id.toLowerCase().indexOf(txtenter.toLowerCase()) < 0) {
                     $(this).hide();
                 }
-
-
                 else {
                     $(this).show();
                 }
@@ -323,28 +197,17 @@ else if (isLoggedIn == false)
         })
     })
 
-
- 
-
-
     function likecheck(Id123) {
-        /*var model = $('#dataModel1');*/
         $.ajax({
-            
             url: '/entries/Like1?id=' + Id123,
-
             type: "GET",
             contentType: "application/json;charset=utf-8",
             dataType: "json",
-           /* success: function (result) { model.empty().append(result); }*/
         });
     }
 
-
-
     function listloaddata(Id123) {
         $.ajax({
-           
             url: '/entries/listingloaddata?TeacherId=' + Id123,
             contentType: 'application/html; charset=utf-8',
             type: 'GET',
@@ -360,11 +223,8 @@ else if (isLoggedIn == false)
         })
     }
 
-
     function OpenAddPopup12345() {
-
         $.ajax({
-            
             url: '/entries/LoadaddTeacherPopup12345',
             contentType: 'application/html; charset=utf-8',
             type: 'GET',
@@ -373,7 +233,6 @@ else if (isLoggedIn == false)
                 $('#divcontent').empty();
                 $('#divcontent').html(result);
                 $('#AddUpdateModelPopup').modal('show');
-               
             },
             error: function (xhr, status) {
                 alert(status);
@@ -381,11 +240,8 @@ else if (isLoggedIn == false)
         })
     }
 
-
     function OpenAddPopupComment(id1) {
-
         $.ajax({
-           
             url: '/entries/LoadaddTeacherPopupComment1?TeacherId=' + id1,
             contentType: 'application/html; charset=utf-8',
             type: 'GET',
@@ -394,7 +250,6 @@ else if (isLoggedIn == false)
                 $('#divcontent').empty();
                 $('#divcontent').html(result);
                 $('#AddUpdateModelPopup').modal('show');
-
             },
             error: function (xhr, status) {
                 alert(status);
@@ -402,12 +257,8 @@ else if (isLoggedIn == false)
         })
     }
 
-
-
     function OpenAddPopup1234() {
-
         $.ajax({
-           
             url: '/entries/LoadaddTeacherPopup1234',
             contentType: 'application/html; charset=utf-8',
             type: 'GET',
@@ -423,12 +274,8 @@ else if (isLoggedIn == false)
         })
     }
 
-
-
     function OpenAddPopup() {
-
         $.ajax({
-           
             url: '/entries/LoadaddTeacherPopup1',
             contentType: 'application/html; charset=utf-8',
             type: 'GET',
@@ -444,7 +291,6 @@ else if (isLoggedIn == false)
         })
     }
 
-
     function AddTeacher12345() {
         var res = ValidateForm122();
         if (res == false) {
@@ -454,35 +300,19 @@ else if (isLoggedIn == false)
         var TeacherObj = {
             ID: $('#ID').val(),
             entry_ID: $('#entry_ID').val(),
-            /*yazar_yorum: $('#yazar_yorum').val(),*/
             yazar_ID: $('#yazar_ID').val(),
             comment: $('#comment').val(),
             kayit_tarih: $('#kayit_tarih').val(),
             is_active: $('#is_active').val(),
         };
+
         $.ajax({
-            
             url: "/entries/AddComment",
             data: JSON.stringify(TeacherObj),
             type: "POST",
             contentType: "application/json;charset=utf-8",
             dataType: "json",
             success: function (result) {
-                //populate table with new record
-                //swal("Welcome!", "Your comment has been added", "success");
-
-                //Swal.fire({
-                //    title: 'Successful!',
-                //    text: 'Your comment has been added',
-                //    icon: 'success',
-                //    confirmButtonText: 'Cool',
-                //    customClass: 'swal-wide',
-                //    backdrop: false,
-                //    timer:3000,
-                //})
-
-
-                /*window.setTimeout(function () { location.reload() }, 1500)*/
                 $('#AddUpdateModelPopup').modal('hide');
             },
             error: function (errormessage) {
@@ -499,8 +329,6 @@ else if (isLoggedIn == false)
         var TeacherObj = {
             ID: $('#ID').val(),
             yazar_ismi: $('#yazar_ismi').val(),
-            /*yazar_yorum: $('#yazar_yorum').val(),*/
-            /* yazar_id: $('#yazar_id').val(),*/
             kayit_tarih: $('#kayit_tarih').val(),
             active: $('#active').val(),
         };
@@ -512,17 +340,6 @@ else if (isLoggedIn == false)
             contentType: "application/json;charset=utf-8",
             dataType: "json",
             success: function (result) {
-                //populate table with new record
-                ////Swal.fire({
-                ////    title: 'Welcome!',
-                ////    text: 'Successful',
-                ////    icon: 'success',
-                ////    confirmButtonText: 'Cool',
-                ////    customClass: 'swal-wide',
-                ////    timer: 3000,
-                ////})
-                /* window.setTimeout(function () { location.reload() }, 1500)*/
-
                 $('#AddUpdateModelPopup').modal('hide');
             },
             error: function (errormessage) {
@@ -540,10 +357,8 @@ else if (isLoggedIn == false)
             ID: $('#ID').val(),
             entry_ismi: $('#entry_ismi').val(),
             entry_icerik: $('#entry_icerik').val(),
-            /*yazar_yorum: $('#yazar_yorum').val(),*/
             yazar_id: $('#yazar_id').val(),
             kayit_tarih: $('#kayit_tarih').val(),
-            //post_like = $('#post_like').val(),
             active: $('#active').val(),
         };
         $.ajax({
@@ -554,17 +369,6 @@ else if (isLoggedIn == false)
             contentType: "application/json;charset=utf-8",
             dataType: "json",
             success: function (result) {
-                //populate table with new record
-
-                //Swal.fire({
-                //    title: 'Successful!',
-                //    text: 'Your comment has been added',
-                //    icon: 'success',
-                //    confirmButtonText: 'Cool',
-                //    customClass: 'swal-wide',
-                //    timer: 3000,
-                //})
-                /*window.setTimeout(function () { location.reload() }, 1500)*/
                 $('#AddUpdateModelPopup').modal('hide');
             },
             error: function (errormessage) {
@@ -582,31 +386,17 @@ else if (isLoggedIn == false)
             ID: $('#ID').val(),
             entry_ID: $('#entry_ID').val(),
             yazar_ID: $('#yazar_ID').val(),
-            /*yazar_yorum: $('#yazar_yorum').val(),*/
             comment: $('#comment').val(),
             kayit_tarih: $('#kayit_tarih').val(),
-            //post_like = $('#post_like').val(),
             active: $('#active').val(),
         };
         $.ajax({
-           
             url: "/entries/AddTeacherComment",
             data: JSON.stringify(TeacherObj),
             type: "POST",
             contentType: "application/json;charset=utf-8",
             dataType: "json",
             success: function (result) {
-                //populate table with new record
-
-                //Swal.fire({
-                //    title: 'Successful!',
-                //    text: 'Your comment has been added',
-                //    icon: 'success',
-                //    confirmButtonText: 'Cool',
-                //    customClass: 'swal-wide',
-                //    timer: 3000,
-                //})
-                /* window.setTimeout(function () { location.reload() }, 1500)*/
                 $('#AddUpdateModelPopup').modal('hide');
             },
             error: function (errormessage) {
@@ -626,8 +416,6 @@ else if (isLoggedIn == false)
                 $('#divcontent').empty();
                 $('#divcontent').html(result);
                 $('#AddUpdateModelPopup').modal('show');
-                //$('#btndivuserguidemodel').trigger('click');
-
             },
             error: function (xhr, status) {
                 alert(status);
@@ -637,7 +425,6 @@ else if (isLoggedIn == false)
 
     function OpenUpdatePopup15(Id123) {
         $.ajax({
-           
             url: '/entries/LoadEditTeacherPopup15?TeacherId=' + Id123,
             contentType: 'application/html; charset=utf-8',
             type: 'GET',
@@ -646,16 +433,12 @@ else if (isLoggedIn == false)
                 $('#divcontent').empty();
                 $('#divcontent').html(result);
                 $('#AddUpdateModelPopup').modal('show');
-                //$('#btndivuserguidemodel').trigger('click');
-
             },
             error: function (xhr, status) {
                 alert(status);
             }
         })
     }
-
-    //function for updating Patient record
     function UpdateTeacher() {
         var res = ValidateForm1();
         if (res == false) {
@@ -665,14 +448,9 @@ else if (isLoggedIn == false)
             ID: $('#ID').val(),
             yazar_ismi: $('#yazar_ismi').val(),
             yazar_yorum: $('#yazar_yorum').val(),
-            /* yazar_id: $('#yazar_id').val(),*/
             kayit_tarih: $('#kayit_tarih').val(),
             active: $('#active').val(),
         };
-        //if (!TeacherObj.Id || TeacherObj.Id <= 0) {
-        //    alert("Invalid Id!");
-        //    return false;
-        //}
         $.ajax({
            
             url: "/entries/Updateauthordetails",
@@ -681,17 +459,6 @@ else if (isLoggedIn == false)
             contentType: "application/json;charset=utf-8",
             dataType: "json",
             success: function (result) {
-
-                ////Swal.fire({
-                ////    title: 'Successful!',
-                ////    text: 'Your Data has been updated',
-                ////    icon: 'success',
-                ////    confirmButtonText: 'Cool',
-                ////    customClass: 'swal-wide',
-                ////    timer: 3000,
-                ////})
-                /*window.setTimeout(function () { location.reload() }, 1500)*/
-                //BindteacherData();
                 $('#AddUpdateModelPopup').modal('hide');
             },
             error: function (errormessage) {
@@ -714,29 +481,14 @@ else if (isLoggedIn == false)
             post_like: $('#post_like').val(),
             active: $('#active').val(),
         };
-        //if (!TeacherObj.Id || TeacherObj.Id <= 0) {
-        //    alert("Invalid Id!");
-        //    return false;
-        //}
+      
         $.ajax({
-           
             url: "/entries/UpdateTeacher",
             data: JSON.stringify(TeacherObj),
             type: "POST",
             contentType: "application/json;charset=utf-8",
             dataType: "json",
             success: function (result) {
-
-
-                //Swal.fire({
-                //    title: 'Successful!',
-                //    text: 'Your Data has been updated',
-                //    icon: 'success',
-                //    confirmButtonText: 'Cool',
-                //    customClass: 'swal-wide',
-                //    timer: 3000,
-                //})
-                /*window.setTimeout(function () { location.reload() }, 1500)*/
                 $('#AddUpdateModelPopup').modal('hide');
             },
             error: function (errormessage) {
@@ -758,29 +510,14 @@ else if (isLoggedIn == false)
             kayit_tarih: $('#kayit_tarih').val(),
             is_active: $('#is_active').val(),
         };
-        //if (!TeacherObj.Id || TeacherObj.Id <= 0) {
-        //    alert("Invalid Id!");
-        //    return false;
-        //}
+        
         $.ajax({
-           
             url: "/entries/UpdateTeacher151",
             data: JSON.stringify(TeacherObj),
             type: "POST",
             contentType: "application/json;charset=utf-8",
             dataType: "json",
             success: function (result) {
-
-
-                //Swal.fire({
-                //    title: 'Successful!',
-                //    text: 'Your Data has been updated',
-                //    icon: 'success',
-                //    confirmButtonText: 'Cool',
-                //    customClass: 'swal-wide',
-                //    timer: 3000,
-                //})
-                /* window.setTimeout(function () { location.reload() }, 1500)*/
                 $('#AddUpdateModelPopup').modal('hide');
             },
             error: function (errormessage) {
@@ -799,16 +536,6 @@ else if (isLoggedIn == false)
                 contentType: "application/json;charset=UTF-8",
                 dataType: "json",
                 success: function (result) {
-
-                    //Swal.fire({
-                    //    title: 'Successful!',
-                    //    text: 'Your Data has been deleted',
-                    //    icon: 'success',
-                    //    confirmButtonText: 'Cool',
-                    //    customClass: 'swal-wide',
-                    //    timer: 3000,
-                    //})
-                    /*window.setTimeout(function () { location.reload() }, 1500)*/
                 },
                 error: function (errormessage) {
                     alert(errormessage.responseText);
@@ -827,16 +554,7 @@ else if (isLoggedIn == false)
                 contentType: "application/json;charset=UTF-8",
                 dataType: "json",
                 success: function (result) {
-
-                    //Swal.fire({
-                    //    title: 'Successful!',
-                    //    text: 'Your Data has been deleted',
-                    //    icon: 'success',
-                    //    confirmButtonText: 'Cool',
-                    //    customClass: 'swal-wide',
-                    //    timer: 3000,
-                    //})
-                    /*window.setTimeout(function () { location.reload() }, 1500)*/
+                    $('#AddUpdateModelPopup').modal('hide');
                 },
                 error: function (errormessage) {
                     alert(errormessage.responseText);
@@ -1091,6 +809,4 @@ else if (isLoggedIn == false)
         //}
         return isValid;
     }
-
-
 </script>

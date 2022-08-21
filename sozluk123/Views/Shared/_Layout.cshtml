@@ -1,40 +1,21 @@
 ﻿<!DOCTYPE html>
-
-
-
-
 <html>
-
-
-
-
-@{
-    bool isLoggedIn = true;
-    if (string.IsNullOrWhiteSpace(User.Identity.Name))
-    {
-        isLoggedIn = false;
-    }
-}
-
-
-
+@{ bool isLoggedIn = true;
+                if (string.IsNullOrWhiteSpace(User.Identity.Name))
+                {
+                    isLoggedIn = false;
+                } }
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+
+    <title>Sozluk</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
 </head>
-
-
 
 <body>
     <style>
-       
-       
-       
         .navbar-inverse {
             background-color: white;
             border-color: #000000;
@@ -48,14 +29,11 @@
                 background-color: #000000;
                 border-color: black;
             }
-         
-       
-   
 
-                .navbar-inverse .navbar-brand:hover, .navbar-inverse .navbar-brand:focus {
-                    background-color: ghostwhite;
-                    color: #000000;
-                }
+            .navbar-inverse .navbar-brand:hover, .navbar-inverse .navbar-brand:focus {
+                background-color: ghostwhite;
+                color: #000000;
+            }
 
             .navbar-inverse .navbar-nav > li > a {
                 color: #000000;
@@ -70,11 +48,12 @@
                     color: black;
                 }
 
-        .navbar-inverse .navbar-toggle:hover,
-        .navbar-inverse .navbar-toggle:focus {
-            background-color: ghostwhite;
-        }
+            .navbar-inverse .navbar-toggle:hover,
+            .navbar-inverse .navbar-toggle:focus {
+                background-color: ghostwhite;
+            }
     </style>
+
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -82,64 +61,33 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
-
                 </button>
-                @Html.ActionLink(" Sozluk Demo Version 1.2", "Index123", "entries", new { area = "" }, new { @class = "navbar-brand fa fa-home  "})
+                @Html.ActionLink(" Sozluk Demo", "Index123", "entries", new { area = "" }, new { @style = "font-size:20px;", @class = "navbar-brand fa fa-home  " })
             </div>
-
-
             <div class="navbar-collapse collapse navbar-right">
-
                 <ul class="nav navbar-nav">
                     @{ if (isLoggedIn)
-                                    {
-                        <li>@Html.ActionLink(" Welcome " + @User.Identity.Name, "Index123", "entries",new { @class = "fa fa-user"})</li>
-
-
-
-
-                                        <li><a href="javascript:void(0);" onclick="OpenAddPopup1234();" class="fa fa-plus">Add New Entry</a></li>
-
-                                                        <li>@Html.ActionLink(" Signout", "Signout", "Accounts",new { area= "" }, new { @class = " fa fa-sign-out"})</li> 
-                                                        
-                                                        }
-                                                                    else
-                                                                    {
-                                                        <li>@Html.ActionLink(" Login", "Login", "Accounts", new { area = "" }, new { @class = " fa fa-sign-in" })</li>
-
-                                                                        <li>@Html.ActionLink(" Register", "Signup", "Accounts", new { area = "" }, new { @class = " fa fa-user-plus" })</li> } }
+                        {
+            <li>@Html.ActionLink(" Welcome " + @User.Identity.Name, "Index123", "entries", new { @style = "font-size:20px;", @class = "fa fa-user" })</li>
+                            <li><a style="font-size:20px" href="javascript:void(0);" onclick="OpenAddPopup1234();" class="fa fa-plus">Add New Entry</a></li>
+                                            <li>@Html.ActionLink(" Signout", "Signout", "Accounts", new { area = "" }, new { @style = "font-size:20px;", @class = "fa fa-sign-out" })</li> }
+                                                        else
+                                                        {
+                                            <li>@Html.ActionLink(" Login", "Login", "Accounts", new { area = "" }, new { @style = "font-size:20px;", @class = "fa fa-sign-in" })</li>
+                                                            <li>@Html.ActionLink(" Register", "Signup", "Accounts", new { area = "" }, new { @style = "font-size:20px;", @class = "fa fa-user-plus" })</li> } }
                 </ul>
-
             </div>
-
-
-
-
-
         </div>
     </div>
+
     <div class="container body-content">
         @RenderBody()
-
-
     </div>
-    
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
-    <script type="text/javascript">
-        $(document).on('click', function () {
-            $('.collapse').collapse('hide');
-        })
-
-    </script>
-
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-
-
     @RenderSection("scripts", required: false)
-
-
 </body>
 </html>
 

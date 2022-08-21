@@ -3,142 +3,46 @@
 @model lstentries1
 
 
-
-
-<script src="~/Scripts/jquery-3.4.0.slim.min.js"></script>
-<script src="~/Scripts/jquery-3.4.0.min.js"></script>
+<script src="~/Scripts/jquery-3.4.1.slim.min.js"></script>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script src="~/Scripts/jquery.signalR-2.4.3.min.js"></script>
-<script src="~/Scripts/bootstrap.min.js"></script>
 <script src='/signalr/js'></script>
-
-
-
 
 
 <script type="text/javascript">
 
-
-
+    var hubNotify = $.connection.entriesHub;
+    $.connection.hub.start().done(function () {
+        getAll1();
+    });
+    hubNotify.client.refreshEmployeeData = function () {
+        getAll1();
+    };
 
     function getAll1() {
-
         $.ajax({
-
             url: '/entries/GetEmployeeData',
             async: true,
             contentType: 'application/html ; charset:utf-8',
             type: 'GET',
-
-
             dataType: 'html',
             success: function (result) {
                 if ($('#AddUpdateModelPopup').is(':visible')) {
-                console.log("opened");
-
+                    console.log("opened");
                 }
                 else {
                     console.log("closed");
                     $('#dataModel').empty().append(result);
-                   
                 }
-
-           
-                
             },
             error: function (xhr, status) {
                 alert(status);
             }
         });
     }
-
-
 </script>
 
 
-
-
-
-
-<script type="text/javascript">
-
-
-
-
-
-
-
-
-    //function deneme() {
-    //    setInterval(function () {
-
-    //        if ($('#AddUpdateModelPopup').is(':visible')) {
-    //            console.log("opened");
-
-    //        }
-
-    //        else {
-    //            console.log("closed");
-
-    //            getAll1();
-
-    //        }
-
-    //    }, 5000);
-
-
-    //}
-
-
-</script>
-
-<script type="text/javascript">
-
-</script>
-
-<script>
-    var hubNotify = $.connection.entriesHub;
-
-
-    $.connection.hub.start().done(function () {
-
-        getAll1();
-
-    });
-
-
-
-    hubNotify.client.refreshEmployeeData = function () {
-
-        getAll1();
-    
-    };
-
-    //function ddr3() {
-
-    //   setInterval(function () {
-    //        $('#AddUpdateModelPopup').on('hidden.bs.modal', function () {
-
-    //            console.log("hidden");
-
-    //            getAll1();
-
-    //        })
-    //        $('#AddUpdateModelPopup').on('shown.bs.modal', function () {
-
-    //            console.log("shown");
-    //        })
-
-
-
-
-
-    //    }, 3000)
-
-    //}
-
-
-
-</script>
 
 <div id="dataModel"></div>
 
