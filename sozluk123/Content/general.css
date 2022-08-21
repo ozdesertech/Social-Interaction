@@ -20,7 +20,7 @@
 .column {
     float: left;
     width: 100.00%;
-    padding: 10px;
+    padding: 0px;
     height: 300px; /* Should be removed. Only for demonstration */
 }
 

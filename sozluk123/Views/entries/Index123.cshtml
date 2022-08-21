@@ -32,7 +32,8 @@
                 }
                 else {
                     console.log("closed");
-                    $('#dataModel').empty().append(result);
+                    $('#dataModel').empty();
+                    $('#dataModel').append(result);
                 }
             },
             error: function (xhr, status) {
@@ -43,6 +44,5 @@
 </script>
 
 
-
-<div id="dataModel"></div>
+<div  id="dataModel"></div>
 
