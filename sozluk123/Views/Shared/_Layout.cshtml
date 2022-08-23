@@ -56,13 +56,19 @@
             }
 
 
-        .navbar-header {
-            position: static;
+       
+
+        div.navbar.navbar-inverse.navbar-fixed-top:not(.modal-open) {
+        padding-right:0px !important;
+        padding-left:0px !important;
+        }
+        .modal {
             padding-right: 0px !important;
         }
-        button.navbar-toggle {
-            position:static;
-           
+
+        .modal-open {
+            overflow: auto;
+            padding-right: 0 !important;
         }
         /*.modal-open {
             padding-right: 0px !important;
